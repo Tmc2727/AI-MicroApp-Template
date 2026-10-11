@@ -109,19 +109,37 @@ details ul { padding-left: 20px; }
 .row { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
 .toast { font-family: var(--mono); font-size: 13px; color: var(--accent); }
 
-/* Mentimeter poll cards */
-.join { display: grid; gap: 4px; background: var(--sheet); border: 1px solid var(--rule); border-left: 4px solid var(--accent); border-radius: 10px; padding: 14px 18px; }
-.join .step { font-family: var(--mono); font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-soft); }
-.join .where { font-family: var(--display); font-weight: 700; font-size: 22px; line-height: 1.3; }
-.join .where a { color: var(--ink); text-decoration-color: var(--accent); text-underline-offset: 4px; }
-.menti-code { font-family: var(--mono); font-weight: 500; letter-spacing: .06em; color: var(--accent); font-variant-numeric: tabular-nums; white-space: nowrap; }
-.poll-q { font-family: var(--display); font-weight: 600; font-size: 17px; line-height: 1.35; }
-.opts { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
-.opts li { font-size: 15.5px; line-height: 1.4; padding: 8px 12px; border: 1px solid var(--rule); border-radius: 8px; background: var(--paper); }
-.vote-line { font-family: var(--mono); font-size: 13px; color: var(--ink-soft); }
-.vote-line a { color: var(--ink); }
-.vote-line b { color: var(--accent); font-weight: 500; letter-spacing: .04em; }
+/* quick checks */
+.check fieldset { border: 0; margin: 0; padding: 0; display: grid; gap: 8px; }
+.check legend { padding: 0; margin-bottom: 4px; }
+.opt { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 12px; align-items: center; border: 1px solid var(--rule); border-radius: 8px; padding: 10px 14px; cursor: pointer; background: var(--sheet); position: relative; }
+.opt:hover { border-color: var(--ink-soft); }
+.opt input { position: absolute; opacity: 0; pointer-events: none; }
+.opt .radio { width: 18px; height: 18px; border-radius: 50%; border: 2px solid var(--ink-soft); display: grid; place-items: center; }
+.opt input:checked ~ .radio { border-color: var(--accent); }
+.opt input:checked ~ .radio::after { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--accent); }
+.opt:has(input:checked) { border-color: var(--accent); background: var(--accent-soft); }
+.opt input:focus-visible ~ .radio { outline: 3px solid var(--focus); outline-offset: 2px; }
+.opt .txt { font-size: 15.5px; line-height: 1.4; }
 .poll-meta { font-family: var(--mono); font-size: 12.5px; color: var(--ink-soft); }
+
+/* progress + plans */
+.progress { display: grid; gap: 6px; }
+.progress-row { display: flex; align-items: center; gap: 12px; font-family: var(--mono); font-size: 13px; color: var(--ink-soft); flex-wrap: wrap; }
+.progress-track { flex: 1 1 160px; height: 8px; border-radius: 999px; background: var(--bar-soft); overflow: hidden; }
+.progress-fill { display: block; height: 100%; width: 0; background: var(--accent); transition: width .4s ease; }
+@media (prefers-reduced-motion: reduce) { .progress-fill { transition: none; } }
+.steps, .ai-plan { display: grid; gap: 16px; }
+.ai-plan { border-top: 1px solid var(--rule); padding-top: 16px; }
+.ai-head { font-family: var(--display); font-size: 19px; margin: 0; }
+.step-group { display: grid; gap: 6px; }
+.step-group h4 { font-family: var(--mono); font-weight: 500; font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--accent); margin: 0; }
+.step-group ul { margin: 0; padding-left: 20px; display: grid; gap: 8px; }
+.step-group li { font-size: 15.5px; line-height: 1.5; }
+.step-group .r-by { font-size: 14px; color: var(--ink-soft); }
+.step-group .r-note { display: block; font-size: 14.5px; color: var(--ink-soft); }
+.step-group .when { display: inline-block; font-family: var(--mono); font-size: 11.5px; letter-spacing: .04em; padding: 1px 7px; margin-right: 8px; border-radius: 4px; background: var(--bar-soft); color: var(--ink); }
+.btn:disabled { opacity: .6; cursor: progress; }
 
 /* sorter */
 .sort-list { display: grid; gap: 8px; }
@@ -154,13 +172,9 @@ footer .who { font-family: var(--display); font-weight: 700; color: var(--ink); 
 <header class="masthead">
   <div class="eyebrow">USD 383 · October 2026 · Session 1 handout</div>
   <h1>Normal, Revolutionary, <span class="three">or Against the Natural Order?</span></h1>
-  <p class="sub">Teaching in an AI World: Literacy, Learning, and Human Judgment. Use this page alongside the talk to answer quick polls, try the activities, and leave with a plan you can use on Monday.</p>
+  <p class="sub">Teaching in an AI World: Literacy, Learning, and Human Judgment. Use this page alongside the talk to reflect, try the activities, and leave with a plan you can use on Monday.</p>
   <p class="byline">Theresa Merrick Cassidy · Kansas State University</p>
-  <div class="join">
-    <span class="step">Live polls during the talk</span>
-    <span class="where">Go to <a href="https://www.menti.com" target="_blank" rel="noopener">menti.com</a> and enter code <span class="menti-code" data-menti-code>shown on screen</span></span>
-  </div>
-  <p class="hint">Keep Mentimeter open in another tab. The poll questions also appear below so you can think ahead and look back. Your notes on this page stay in this browser.</p>
+  <p class="hint">Fill it in as you listen. Your responses are saved in this browser only. When you finish, the last section turns them into next steps tailored to your classroom.</p>
 </header>
 
 <nav class="nav" aria-label="Handout sections">
@@ -175,6 +189,7 @@ footer .who { font-family: var(--display); font-weight: 700; color: var(--ink); 
     <li><a href="#teachers" data-sec="teachers"><span class="dot"></span>Teacher use</a></li>
     <li><a href="#try3" data-sec="try3"><span class="dot"></span>Try it 3</a></li>
     <li><a href="#plan" data-sec="plan"><span class="dot"></span>My plan</a></li>
+    <li><a href="#actions" data-sec="actions"><span class="dot"></span>Next steps</a></li>
   </ol>
 </nav>
 
@@ -189,16 +204,15 @@ footer .who { font-family: var(--display); font-weight: 700; color: var(--ink); 
     <cite>Douglas Adams, The Salmon of Doubt (2002), p. 60</cite>
   </blockquote>
 
-  <div class="card poll" data-poll="adams">
-    <div class="card-label"><span class="tag">Mentimeter poll</span><span class="poll-meta">Question 1 of 9</span></div>
-    <p class="poll-q">Right now, generative AI feels…</p>
-    <ul class="opts">
-      <li>Normal and ordinary: part of how the world works</li>
-      <li>New, exciting, revolutionary</li>
-      <li>Against the natural order of things</li>
-      <li>Some of each, depending on the day</li>
-    </ul>
-    <p class="vote-line">Vote at <a href="https://www.menti.com" target="_blank" rel="noopener">menti.com</a> · code <b data-menti-code>shown on screen</b></p>
+  <div class="card check" data-check="adams">
+    <div class="card-label"><span class="tag">Quick check</span></div>
+    <fieldset>
+      <legend class="fieldset-label">Right now, generative AI feels…</legend>
+      <label class="opt"><input type="radio" name="adams" value="a" id="c-adams-a"><span class="radio"></span><span class="txt">Normal and ordinary: part of how the world works</span></label>
+      <label class="opt"><input type="radio" name="adams" value="b" id="c-adams-b"><span class="radio"></span><span class="txt">New, exciting, revolutionary</span></label>
+      <label class="opt"><input type="radio" name="adams" value="c" id="c-adams-c"><span class="radio"></span><span class="txt">Against the natural order of things</span></label>
+      <label class="opt"><input type="radio" name="adams" value="d" id="c-adams-d"><span class="radio"></span><span class="txt">Some of each, depending on the day</span></label>
+    </fieldset>
   </div>
 
   <div class="card">
@@ -228,15 +242,14 @@ footer .who { font-family: var(--display); font-weight: 700; color: var(--ink); 
     <div class="tile"><b>About AI</b><span>Help students understand what AI is doing, how to evaluate it, and what responsibilities stay with them.</span></div>
   </div>
 
-  <div class="card poll" data-poll="care">
-    <div class="card-label"><span class="tag">Mentimeter poll</span><span class="poll-meta">Question 2 of 9</span></div>
-    <p class="poll-q">For the students you teach, which needs the most attention this year?</p>
-    <ul class="opts">
-      <li>Thinking with AI</li>
-      <li>Thinking without AI</li>
-      <li>Thinking about AI</li>
-    </ul>
-    <p class="vote-line">Vote at <a href="https://www.menti.com" target="_blank" rel="noopener">menti.com</a> · code <b data-menti-code>shown on screen</b></p>
+  <div class="card check" data-check="care">
+    <div class="card-label"><span class="tag">Quick check</span></div>
+    <fieldset>
+      <legend class="fieldset-label">For the students you teach, which needs the most attention this year?</legend>
+      <label class="opt"><input type="radio" name="care" value="a" id="c-care-a"><span class="radio"></span><span class="txt">Thinking with AI</span></label>
+      <label class="opt"><input type="radio" name="care" value="b" id="c-care-b"><span class="radio"></span><span class="txt">Thinking without AI</span></label>
+      <label class="opt"><input type="radio" name="care" value="c" id="c-care-c"><span class="radio"></span><span class="txt">Thinking about AI</span></label>
+    </fieldset>
   </div>
 
   <div class="quad">
@@ -266,16 +279,15 @@ footer .who { font-family: var(--display); font-weight: 700; color: var(--ink); 
   </div>
   <p class="lede">Everyone needs literacy. The level of fluency can vary by age, purpose, and context. Fluent output still needs evaluation: search can improve grounding, but it does not remove the need for judgment.</p>
 
-  <div class="card poll" data-poll="fluency">
-    <div class="card-label"><span class="tag">Mentimeter poll</span><span class="poll-meta">Question 3 of 9</span></div>
-    <p class="poll-q">Which best describes your own AI use right now?</p>
-    <ul class="opts">
-      <li>I haven't really tried it yet</li>
-      <li>I've experimented a few times</li>
-      <li>I use it regularly for some tasks</li>
-      <li>It's part of my daily workflow</li>
-    </ul>
-    <p class="vote-line">Vote at <a href="https://www.menti.com" target="_blank" rel="noopener">menti.com</a> · code <b data-menti-code>shown on screen</b></p>
+  <div class="card check" data-check="fluency">
+    <div class="card-label"><span class="tag">Quick check</span></div>
+    <fieldset>
+      <legend class="fieldset-label">Which best describes your own AI use right now?</legend>
+      <label class="opt"><input type="radio" name="fluency" value="a" id="c-fluency-a"><span class="radio"></span><span class="txt">I haven't really tried it yet</span></label>
+      <label class="opt"><input type="radio" name="fluency" value="b" id="c-fluency-b"><span class="radio"></span><span class="txt">I've experimented a few times</span></label>
+      <label class="opt"><input type="radio" name="fluency" value="c" id="c-fluency-c"><span class="radio"></span><span class="txt">I use it regularly for some tasks</span></label>
+      <label class="opt"><input type="radio" name="fluency" value="d" id="c-fluency-d"><span class="radio"></span><span class="txt">It's part of my daily workflow</span></label>
+    </fieldset>
   </div>
 </section>
 
@@ -301,16 +313,15 @@ footer .who { font-family: var(--display); font-weight: 700; color: var(--ink); 
     <p class="hint">Then turn to a neighbor: one thing the answer did reasonably well, and one thing you noticed only because you knew the subject.</p>
   </div>
 
-  <div class="card poll" data-poll="t1">
-    <div class="card-label"><span class="tag">Mentimeter poll</span><span class="poll-meta">Question 4 of 9</span></div>
-    <p class="poll-q">Overall, the answer you got was…</p>
-    <ul class="opts">
-      <li>Solid. I'd stand behind most of it</li>
-      <li>Accurate but incomplete</li>
-      <li>Plausible, but misleading in places</li>
-      <li>Wrong on something that matters</li>
-    </ul>
-    <p class="vote-line">Vote at <a href="https://www.menti.com" target="_blank" rel="noopener">menti.com</a> · code <b data-menti-code>shown on screen</b></p>
+  <div class="card check" data-check="t1">
+    <div class="card-label"><span class="tag">Quick check</span></div>
+    <fieldset>
+      <legend class="fieldset-label">Overall, the answer you got was…</legend>
+      <label class="opt"><input type="radio" name="t1" value="a" id="c-t1-a"><span class="radio"></span><span class="txt">Solid. I'd stand behind most of it</span></label>
+      <label class="opt"><input type="radio" name="t1" value="b" id="c-t1-b"><span class="radio"></span><span class="txt">Accurate but incomplete</span></label>
+      <label class="opt"><input type="radio" name="t1" value="c" id="c-t1-c"><span class="radio"></span><span class="txt">Plausible, but misleading in places</span></label>
+      <label class="opt"><input type="radio" name="t1" value="d" id="c-t1-d"><span class="radio"></span><span class="txt">Wrong on something that matters</span></label>
+    </fieldset>
   </div>
 </section>
 
@@ -358,16 +369,15 @@ footer .who { font-family: var(--display); font-weight: 700; color: var(--ink); 
     <div class="tile"><b>Short reflection</b><span>What was difficult? What decisions did you make? What did you change, and why? Process work should reveal learning, not become paperwork.</span></div>
   </div>
 
-  <div class="card poll" data-poll="move">
-    <div class="card-label"><span class="tag">Mentimeter poll</span><span class="poll-meta">Question 5 of 9</span></div>
-    <p class="poll-q">Which move could you add to an existing assignment soonest?</p>
-    <ul class="opts">
-      <li>Evaluate an AI response together</li>
-      <li>Student thinking first, then compare with AI</li>
-      <li>Add an "Ask AI" step to research</li>
-      <li>One short reflection on a writing task</li>
-    </ul>
-    <p class="vote-line">Vote at <a href="https://www.menti.com" target="_blank" rel="noopener">menti.com</a> · code <b data-menti-code>shown on screen</b></p>
+  <div class="card check" data-check="move">
+    <div class="card-label"><span class="tag">Quick check</span></div>
+    <fieldset>
+      <legend class="fieldset-label">Which move could you add to an existing assignment soonest?</legend>
+      <label class="opt"><input type="radio" name="move" value="a" id="c-move-a"><span class="radio"></span><span class="txt">Evaluate an AI response together</span></label>
+      <label class="opt"><input type="radio" name="move" value="b" id="c-move-b"><span class="radio"></span><span class="txt">Student thinking first, then compare with AI</span></label>
+      <label class="opt"><input type="radio" name="move" value="c" id="c-move-c"><span class="radio"></span><span class="txt">Add an "Ask AI" step to research</span></label>
+      <label class="opt"><input type="radio" name="move" value="d" id="c-move-d"><span class="radio"></span><span class="txt">One short reflection on a writing task</span></label>
+    </fieldset>
   </div>
 </section>
 
@@ -403,16 +413,15 @@ footer .who { font-family: var(--display); font-weight: 700; color: var(--ink); 
     <div class="tile"><b>AI is the task</b><span>We are evaluating what the system produces.</span></div>
   </div>
 
-  <div class="card poll" data-poll="rules">
-    <div class="card-label"><span class="tag">Mentimeter poll</span><span class="poll-meta">Question 6 of 9</span></div>
-    <p class="poll-q">Think of your next major assignment. Which level fits it best?</p>
-    <ul class="opts">
-      <li>No AI</li>
-      <li>After human attempt</li>
-      <li>AI allowed</li>
-      <li>AI is the task</li>
-    </ul>
-    <p class="vote-line">Vote at <a href="https://www.menti.com" target="_blank" rel="noopener">menti.com</a> · code <b data-menti-code>shown on screen</b></p>
+  <div class="card check" data-check="rules">
+    <div class="card-label"><span class="tag">Quick check</span></div>
+    <fieldset>
+      <legend class="fieldset-label">Think of your next major assignment. Which level fits it best?</legend>
+      <label class="opt"><input type="radio" name="rules" value="a" id="c-rules-a"><span class="radio"></span><span class="txt">No AI</span></label>
+      <label class="opt"><input type="radio" name="rules" value="b" id="c-rules-b"><span class="radio"></span><span class="txt">After human attempt</span></label>
+      <label class="opt"><input type="radio" name="rules" value="c" id="c-rules-c"><span class="radio"></span><span class="txt">AI allowed</span></label>
+      <label class="opt"><input type="radio" name="rules" value="d" id="c-rules-d"><span class="radio"></span><span class="txt">AI is the task</span></label>
+    </fieldset>
   </div>
 
   <div class="card">
@@ -431,16 +440,15 @@ footer .who { font-family: var(--display); font-weight: 700; color: var(--ink); 
   </div>
   <p class="lede">AI is being built directly into planning, materials, differentiation, feedback, and repeated tasks. A product menu is not a pedagogical argument. Testing a tool is not the same as adopting it.</p>
 
-  <div class="card poll" data-poll="expect">
-    <div class="card-label"><span class="tag">Mentimeter poll</span><span class="poll-meta">Question 7 of 9</span></div>
-    <p class="poll-q">If you were the student: what would you most expect from a teacher who uses AI in your class?</p>
-    <ul class="opts">
-      <li>That they actually engage with my work</li>
-      <li>That a person makes the consequential judgments</li>
-      <li>That they tell me when AI shaped my feedback or grade</li>
-      <li>That they follow the same rules they set for me</li>
-    </ul>
-    <p class="vote-line">Vote at <a href="https://www.menti.com" target="_blank" rel="noopener">menti.com</a> · code <b data-menti-code>shown on screen</b></p>
+  <div class="card check" data-check="expect">
+    <div class="card-label"><span class="tag">Quick check</span></div>
+    <fieldset>
+      <legend class="fieldset-label">If you were the student: what would you most expect from a teacher who uses AI in your class?</legend>
+      <label class="opt"><input type="radio" name="expect" value="a" id="c-expect-a"><span class="radio"></span><span class="txt">That they actually engage with my work</span></label>
+      <label class="opt"><input type="radio" name="expect" value="b" id="c-expect-b"><span class="radio"></span><span class="txt">That a person makes the consequential judgments</span></label>
+      <label class="opt"><input type="radio" name="expect" value="c" id="c-expect-c"><span class="radio"></span><span class="txt">That they tell me when AI shaped my feedback or grade</span></label>
+      <label class="opt"><input type="radio" name="expect" value="d" id="c-expect-d"><span class="radio"></span><span class="txt">That they follow the same rules they set for me</span></label>
+    </fieldset>
   </div>
 
   <div class="card">
@@ -450,16 +458,15 @@ footer .who { font-family: var(--display); font-weight: 700; color: var(--ink); 
     <div class="sort-list" id="sorter"></div>
   </div>
 
-  <div class="card poll" data-poll="feedback">
-    <div class="card-label"><span class="tag">Mentimeter poll</span><span class="poll-meta">Question 8 of 9</span></div>
-    <p class="poll-q">AI drafts written feedback on student essays, and the teacher reviews it before returning it. Your view?</p>
-    <ul class="opts">
-      <li>Fine as is: it saves time for other teaching</li>
-      <li>Fine, if students are told</li>
-      <li>Only for low-stakes drafts</li>
-      <li>Not something I'd delegate</li>
-    </ul>
-    <p class="vote-line">Vote at <a href="https://www.menti.com" target="_blank" rel="noopener">menti.com</a> · code <b data-menti-code>shown on screen</b></p>
+  <div class="card check" data-check="feedback">
+    <div class="card-label"><span class="tag">Quick check</span></div>
+    <fieldset>
+      <legend class="fieldset-label">AI drafts written feedback on student essays, and the teacher reviews it before returning it. Your view?</legend>
+      <label class="opt"><input type="radio" name="feedback" value="a" id="c-feedback-a"><span class="radio"></span><span class="txt">Fine as is: it saves time for other teaching</span></label>
+      <label class="opt"><input type="radio" name="feedback" value="b" id="c-feedback-b"><span class="radio"></span><span class="txt">Fine, if students are told</span></label>
+      <label class="opt"><input type="radio" name="feedback" value="c" id="c-feedback-c"><span class="radio"></span><span class="txt">Only for low-stakes drafts</span></label>
+      <label class="opt"><input type="radio" name="feedback" value="d" id="c-feedback-d"><span class="radio"></span><span class="txt">Not something I'd delegate</span></label>
+    </fieldset>
   </div>
 
   <div class="trio">
@@ -501,32 +508,80 @@ footer .who { font-family: var(--display); font-weight: 700; color: var(--ink); 
   <p class="lede">Teachers will help shape what ordinary AI use looks like.</p>
   <div class="habits"><span>verify</span><span>ask what is missing</span><span>protect some thinking</span><span>be transparent</span><span>use tools purposefully</span><span>know when not to use them</span></div>
 
-  <div class="card poll" data-poll="habit">
-    <div class="card-label"><span class="tag">Mentimeter poll</span><span class="poll-meta">Question 9 of 9</span></div>
-    <p class="poll-q">Which habit will you work to make normal first?</p>
-    <ul class="opts">
-      <li>Verify</li>
-      <li>Ask what is missing</li>
-      <li>Protect some thinking</li>
-      <li>Be transparent</li>
-      <li>Use tools purposefully</li>
-      <li>Know when not to use them</li>
-    </ul>
-    <p class="vote-line">Vote at <a href="https://www.menti.com" target="_blank" rel="noopener">menti.com</a> · code <b data-menti-code>shown on screen</b></p>
-  </div>
+  <div class="card check" data-check="habit">
+      <div class="card-label"><span class="tag">Quick check</span></div>
+      <fieldset>
+        <legend class="fieldset-label">Which habit will you work to make normal first?</legend>
+        <label class="opt"><input type="radio" name="habit" value="a" id="c-habit-a"><span class="radio"></span><span class="txt">Verify</span></label>
+        <label class="opt"><input type="radio" name="habit" value="b" id="c-habit-b"><span class="radio"></span><span class="txt">Ask what is missing</span></label>
+        <label class="opt"><input type="radio" name="habit" value="c" id="c-habit-c"><span class="radio"></span><span class="txt">Protect some thinking</span></label>
+        <label class="opt"><input type="radio" name="habit" value="d" id="c-habit-d"><span class="radio"></span><span class="txt">Be transparent</span></label>
+        <label class="opt"><input type="radio" name="habit" value="e" id="c-habit-e"><span class="radio"></span><span class="txt">Use tools purposefully</span></label>
+        <label class="opt"><input type="radio" name="habit" value="f" id="c-habit-f"><span class="radio"></span><span class="txt">Know when not to use them</span></label>
+      </fieldset>
+    </div>
+
 
   <div class="card try">
     <div class="card-label"><span class="tag">My plan</span></div>
     <div class="field"><label for="p-change">One small change I'll try in the next two weeks</label><textarea id="p-change" data-note="pchange"></textarea></div>
     <div class="grid2">
-      <div class="field"><label for="p-where">In which class or assignment?</label><input type="text" id="p-where" data-note="pwhere"></div>
+      <div class="field"><label for="p-where">In which class or assignment? <small>Include subject and grade.</small></label><input type="text" id="p-where" data-note="pwhere"></div>
       <div class="field"><label for="p-know">How I'll know it helped learning</label><input type="text" id="p-know" data-note="pknow"></div>
     </div>
     <div class="field"><label for="p-question">A question I'm still carrying</label><textarea id="p-question" data-note="pquestion"></textarea></div>
-    <p class="fieldset-label">Everything you wrote today</p>
+  </div>
+</section>
+
+<section class="part" id="actions">
+  <div class="part-head">
+    <span class="slides">After the talk</span>
+    <h2>Your next steps</h2>
+  </div>
+  <p class="lede">Built from what you wrote and chose above. The more of the handout you complete, the more specific this gets.</p>
+
+  <div class="progress" aria-live="polite">
+    <div class="progress-row"><span id="progress-label">0 of 0 completed</span><span class="progress-track"><span class="progress-fill" id="progress-fill"></span></span></div>
+    <p class="hint" id="progress-missing"></p>
+  </div>
+
+  <div class="card">
+    <div class="card-label"><span class="tag">Starter plan</span><span class="poll-meta">Updates as you answer</span></div>
+    <div class="steps" id="starter"></div>
+  </div>
+
+  <div class="card try">
+    <div class="card-label"><span class="tag">Tailor it with AI</span></div>
+    <h3>Turn your responses into a personalized action plan</h3>
+
+    <div id="claude-box" hidden>
+      <p class="hint">Claude reads your responses and writes a plan for you. It runs on your own Claude account and asks your permission first. Reading suggestions come only from the session's reading list.</p>
+      <div class="row"><button class="btn" type="button" id="claude-btn">Build my plan with Claude</button><span class="toast" id="claude-status" aria-live="polite"></span></div>
+    </div>
+    <div class="ai-plan" id="ai-plan" hidden></div>
+
+    <div class="field">
+      <span class="fieldset-label" id="own-ai-label">Use your own AI tool</span>
+      <p class="hint">Copy this prompt into a district-approved AI tool. It already contains your responses. Before you paste, make sure nothing in your notes identifies a student.</p>
+    </div>
+    <div class="row"><button class="btn" type="button" data-copy="ai-prompt">Copy prompt with my responses</button><span class="toast" data-toast="ai-prompt"></span></div>
+    <details>
+      <summary>See the prompt</summary>
+      <div class="prompt-out" id="ai-prompt"></div>
+    </details>
+    <p class="hint"><b>Then do what you practiced today.</b> What in the plan is right for your students? What is missing? What would you reject, and why?</p>
+  </div>
+
+  <div class="card">
+    <div class="card-label"><span class="tag">Keep a record</span></div>
+    <p class="hint">Your responses are saved in this browser only. Nobody else, including the presenter, can see them. Copy or save them before you switch devices or clear your browser.</p>
     <div class="plan" id="plan-out"></div>
-    <div class="row"><button class="btn" type="button" data-copy="plan-out">Copy my notes</button><button class="btn ghost" type="button" id="clear-btn">Clear my notes</button><span class="toast" data-toast="plan-out"></span></div>
-    <p class="hint">Paste your notes into an email to yourself or a planning doc before you close this page.</p>
+    <div class="row">
+      <button class="btn" type="button" data-copy="plan-out">Copy everything</button>
+      <button class="btn ghost" type="button" id="save-btn" hidden>Save as a file</button>
+      <button class="btn ghost" type="button" id="clear-btn">Clear my responses</button>
+      <span class="toast" data-toast="plan-out" id="save-toast"></span>
+    </div>
   </div>
 </section>
 
@@ -552,6 +607,21 @@ footer .who { font-family: var(--display); font-weight: 700; color: var(--ink); 
   };
   let notes = store.load();
   notes.sort = notes.sort || {};
+  notes.choice = notes.choice || {};
+
+  /* ---------- reading list: the only sources the plan may recommend ---------- */
+  const READING = [
+    { id: "adams", title: "The Salmon of Doubt", by: "Douglas Adams (2002)", note: "Essays including “Predicting the Future,” “The Rules,” and “What Have We Got to Lose?”" },
+    { id: "watkins-care", title: "Our Duty of Care in the Age of AI", by: "Marc Watkins (2026)", note: "Ubiquitous AI, and why students need to think with, without, and about machines." },
+    { id: "watkins-build", title: "AI Is Quietly Changing Who Gets to Build Software", by: "Marc Watkins (2026)", note: "How AI is moving into teacher work, and why testing a tool is not adopting it." },
+    { id: "oecd", title: "AI Literacy Framework for primary and secondary learners", by: "OECD & European Commission (2026)", note: "Understanding how AI works, evaluating outputs, ethical and creative use, informed decisions." },
+    { id: "fluency", title: "AI Fluency framework", by: "Anthropic", note: "Delegation, description, discernment, and responsible use once you decide to work with AI." },
+    { id: "gulya", title: "Problems with Process Over Product", by: "Jason Gulya (2026)", note: "Why process work should reveal learning instead of becoming surveillance or paperwork." },
+    { id: "uchicago", title: "AI strategy: thinking with, without, and about machines", by: "University of Chicago", note: "The duty-of-care framing used in this session." },
+    { id: "usd383", title: "AI Guidelines and Board Policy IIBE", by: "USD 383", note: "Approved tools, privacy, and the district's four values." },
+    { id: "bettimg", title: "Better Images of AI", by: "betterimagesofai.org", url: "https://betterimagesofai.org", note: "Accurate, free images of AI for slides and class discussions about how AI is pictured." }
+  ];
+  const READ_BY_ID = Object.fromEntries(READING.map(r => [r.id, r]));
 
   /* ---------- notes ---------- */
   const noteEls = document.querySelectorAll("[data-note]");
@@ -560,6 +630,23 @@ footer .who { font-family: var(--display); font-weight: 700; color: var(--ink); 
     if (notes[k]) el.value = notes[k];
     el.addEventListener("input", () => { notes[k] = el.value; store.save(notes); refresh(); });
   });
+
+  /* ---------- quick checks ---------- */
+  const checks = [...document.querySelectorAll(".check")];
+  checks.forEach(c => {
+    const id = c.dataset.check;
+    c.querySelectorAll("input").forEach(i => { i.checked = notes.choice[id] === i.value; });
+    c.addEventListener("change", e => {
+      if (e.target.name !== id) return;
+      notes.choice[id] = e.target.value;
+      store.save(notes); refresh();
+    });
+  });
+  const choiceText = id => {
+    const i = document.querySelector('input[name="' + id + '"][value="' + notes.choice[id] + '"]');
+    return i ? i.parentElement.querySelector(".txt").textContent : "";
+  };
+  const checkQ = id => document.querySelector('[data-check="' + id + '"] legend').textContent.trim();
 
   /* ---------- prompt builders ---------- */
   const val = (id, fallback) => (document.getElementById(id).value.trim() || fallback);
@@ -586,6 +673,9 @@ footer .who { font-family: var(--display); font-weight: 700; color: var(--ink); 
   ];
   const BUCKETS = [["give", "Hand off"], ["think", "With my thinking"], ["keep", "Keep human"]];
   const sorter = document.getElementById("sorter");
+  function paintSorter() {
+    sorter.querySelectorAll("button").forEach(b => b.setAttribute("aria-pressed", notes.sort[b.dataset.task] === b.dataset.bucket ? "true" : "false"));
+  }
   TASKS.forEach(([id, label]) => {
     const row = document.createElement("div");
     row.className = "sort-item";
@@ -594,63 +684,222 @@ footer .who { font-family: var(--display); font-weight: 700; color: var(--ink); 
     BUCKETS.forEach(([b, bl]) => {
       const btn = document.createElement("button");
       btn.type = "button"; btn.textContent = bl; btn.id = "sort-" + id + "-" + b;
-      btn.setAttribute("aria-pressed", notes.sort[id] === b ? "true" : "false");
+      btn.dataset.task = id; btn.dataset.bucket = b;
       btn.addEventListener("click", () => {
         notes.sort[id] = notes.sort[id] === b ? undefined : b;
-        seg.querySelectorAll("button").forEach(x => x.setAttribute("aria-pressed", "false"));
-        if (notes.sort[id]) btn.setAttribute("aria-pressed", "true");
-        store.save(notes); refresh();
+        store.save(notes); paintSorter(); refresh();
       });
       seg.appendChild(btn);
     });
     row.append(span, seg); sorter.appendChild(row);
   });
+  paintSorter();
 
-  /* ---------- plan summary ---------- */
+  /* ---------- collected responses ---------- */
   function labelFor(id) { const l = document.querySelector('label[for="' + id + '"]'); return l ? l.childNodes[0].textContent.trim() : id; }
-  function buildPlan() {
-    const lines = ["Teaching in an AI World · USD 383 · Session 1", ""];
-    const add = (head, ids) => {
+  const SECTIONS = [
+    ["My plan", ["p-change", "p-where", "p-know", "p-question"]],
+    ["Opening reflections", ["n-students", "n-value"]],
+    ["Try it 1: asking AI about something I know", ["t1-topic", "t1-right", "t1-missing", "t1-over", "t1-know"]],
+    ["Dust Bowl evaluation", ["db-right", "db-missing", "db-verify", "db-know"]],
+    ["Student first, AI later", ["sf-task", "sf-first", "sf-later"]],
+    ["Student prompt I drafted", ["pb-role", "pb-goal", "pb-bounds", "pb-style"]],
+    ["Assignment rules", ["r-why"]],
+    ["Teacher prompt", ["t3-skill", "t3-struggle", "t3-use", "t3-reject"]]
+  ];
+  function responseLines() {
+    const lines = [];
+    const answered = checks.filter(c => notes.choice[c.dataset.check]);
+    if (answered.length) {
+      lines.push("QUICK CHECKS");
+      answered.forEach(c => lines.push("- " + checkQ(c.dataset.check) + " " + choiceText(c.dataset.check)));
+      lines.push("");
+    }
+    SECTIONS.forEach(([head, ids]) => {
       const got = ids.filter(id => document.getElementById(id).value.trim());
       if (!got.length) return;
       lines.push(head.toUpperCase());
       got.forEach(id => lines.push("- " + labelFor(id) + ": " + document.getElementById(id).value.trim()));
       lines.push("");
-    };
-    add("My plan", ["p-change", "p-where", "p-know", "p-question"]);
-    add("Opening reflections", ["n-students", "n-value"]);
-    add("Try it 1: asking AI about what I know", ["t1-topic", "t1-right", "t1-missing", "t1-over", "t1-know"]);
-    add("Dust Bowl evaluation", ["db-right", "db-missing", "db-verify", "db-know"]);
-    add("Student first, AI later", ["sf-task", "sf-first", "sf-later"]);
-    if (["pb-role","pb-goal","pb-bounds","pb-style"].some(id => document.getElementById(id).value.trim())) {
-      lines.push("STUDENT PROMPT I DRAFTED"); lines.push(document.getElementById("pb-out").textContent); lines.push("");
-    }
-    add("Assignment rules", ["r-why"]);
-    if (["t3-skill","t3-struggle"].some(id => document.getElementById(id).value.trim())) {
-      lines.push("TEACHER PROMPT"); lines.push(document.getElementById("t3-out").textContent); lines.push("");
-    }
-    add("AI suggestions", ["t3-use", "t3-reject"]);
+    });
     const sorted = TASKS.filter(([id]) => notes.sort[id]);
     if (sorted.length) {
       lines.push("WHAT I'D HAND TO AI");
       sorted.forEach(([id, l]) => lines.push("- " + l + ": " + BUCKETS.find(b => b[0] === notes.sort[id])[1]));
       lines.push("");
     }
-    const out = lines.join("\n").trim();
-    document.getElementById("plan-out").textContent = out.includes("\n") ? out : "Your notes will collect here as you fill in the activities above.";
+    return lines;
   }
 
-  /* ---------- nav progress ---------- */
-  function markNav() {
-    document.querySelectorAll(".nav a").forEach(a => {
-      const sec = document.getElementById(a.dataset.sec);
-      const anyNote = [...sec.querySelectorAll("[data-note]")].some(el => el.value.trim());
-      const anySort = sec.contains(sorter) && Object.values(notes.sort).some(Boolean);
-      a.classList.toggle("done", anyNote || anySort);
+  /* ---------- progress ---------- */
+  const NAV_NAMES = Object.fromEntries([...document.querySelectorAll(".nav a")].map(a => [a.dataset.sec, a.textContent.trim()]));
+  function sectionDone(sec) {
+    const anyNote = [...sec.querySelectorAll("[data-note]")].some(el => el.value.trim());
+    const anyCheck = [...sec.querySelectorAll(".check")].some(c => notes.choice[c.dataset.check]);
+    const anySort = sec.contains(sorter) && Object.values(notes.sort).some(Boolean);
+    return anyNote || anyCheck || anySort;
+  }
+  function markProgress() {
+    const secs = [...document.querySelectorAll(".nav a")].filter(a => a.dataset.sec !== "actions");
+    let done = 0; const missing = [];
+    secs.forEach(a => {
+      const d = sectionDone(document.getElementById(a.dataset.sec));
+      a.classList.toggle("done", d);
+      if (d) done++; else missing.push(a.dataset.sec);
     });
+    document.getElementById("progress-label").textContent = done + " of " + secs.length + " sections started";
+    document.getElementById("progress-fill").style.width = Math.round(100 * done / secs.length) + "%";
+    const m = document.getElementById("progress-missing");
+    m.textContent = "";
+    if (missing.length) {
+      m.append("Not started yet: ");
+      missing.forEach((id, i) => {
+        const a = document.createElement("a"); a.href = "#" + id; a.textContent = NAV_NAMES[id];
+        m.append(a); if (i < missing.length - 1) m.append(", ");
+      });
+    } else m.textContent = "Every section has something in it.";
   }
 
-  function refresh() { buildPrompts(); buildPlan(); markNav(); }
+  /* ---------- starter plan (rules, no AI) ---------- */
+  function starterPlan() {
+    const c = notes.choice, tryNow = [], read = new Set(["usd383"]), think = [];
+    const topic = (notes.t1topic || "").trim();
+    if ((notes.pchange || "").trim()) tryNow.push("Your own commitment: " + notes.pchange.trim() + ((notes.pwhere || "").trim() ? " (" + notes.pwhere.trim() + ")" : ""));
+    const moves = {
+      a: "Put one AI response about your current unit on the screen and ask: what is right, what is missing, what would you verify, how do you know?",
+      b: "Before AI enters a task, give students three minutes to predict, draft, or solve on their own, then compare with the AI response.",
+      c: "Add an “Ask AI” step to research you already assign: ask the same question, compare with sources, mark what is accurate, questionable, or missing.",
+      d: "Add a two-minute reflection to one writing task: what was difficult, what decisions did you make, what did you change and why?"
+    };
+    if (moves[c.move]) tryNow.push(moves[c.move]);
+    if (c.move === "d") read.add("gulya");
+    if (c.care === "a") { tryNow.push("Design one activity where AI adds comparison, simulation, or iteration after students have done the core thinking."); read.add("fluency"); }
+    if (c.care === "b") { tryNow.push("Pick one step in an upcoming assignment to protect from AI, and tell students why that practice matters."); read.add("gulya"); read.add("uchicago"); }
+    if (c.care === "c") { tryNow.push("Spend ten minutes with students on what AI is doing when it answers, and how they can check it."); read.add("oecd"); }
+    if (["b", "c", "d"].includes(c.t1)) tryNow.push("Turn your own Try-it test" + (topic ? " on “" + topic + "”" : "") + " into a model: show students an answer you found incomplete and how you knew.");
+    if (c.t1 === "a") think.push("Even a solid answer leaves things out. What would a stronger answer have added?");
+    if (c.rules) tryNow.push("Label your next major assignment “" + choiceText("rules") + "” and give students your one-sentence reason.");
+    if (c.fluency === "a" || c.fluency === "b") { tryNow.push("Spend 20 minutes testing a district-approved AI tool on a teacher task you know well. Testing a tool is not adopting it."); read.add("watkins-build"); }
+    if (c.fluency === "c" || c.fluency === "d") { tryNow.push("Review one task you already hand to AI. Should more of your own thinking stay active in it?"); read.add("fluency"); }
+    if (c.expect || c.feedback) { tryNow.push("Ask your students: “What do you expect from your teacher if they use AI in this class?”"); read.add("watkins-care"); }
+    if (c.feedback === "a" || c.feedback === "b") think.push("When does AI meaningfully shape your feedback, and how will students know?");
+    if (c.feedback === "c" || c.feedback === "d") think.push("Which feedback stays fully yours, and have you told students why?");
+    if (c.adams === "c") { think.push("Which of your concerns about AI are about values worth naming to students, and which are about unfamiliarity?"); read.add("adams"); }
+    if (c.adams === "a") think.push("Your students may also find AI ordinary. What do they assume it is doing?");
+    if (c.adams === "b" || c.adams === "d") read.add("adams");
+    if (c.habit) think.push("Make “" + choiceText("habit").toLowerCase() + "” visible: name it out loud the next time AI comes up in class.");
+    if ((notes.pquestion || "").trim()) think.push(notes.pquestion.trim());
+    return { tryNow: tryNow.slice(0, 5), read: [...read].map(id => READ_BY_ID[id]), think: think.slice(0, 3) };
+  }
+  function renderList(parent, title, items, fn) {
+    if (!items.length) return;
+    const g = document.createElement("div"); g.className = "step-group";
+    const h = document.createElement("h4"); h.textContent = title; g.appendChild(h);
+    const ul = document.createElement("ul");
+    items.forEach(it => { const li = document.createElement("li"); fn(li, it); ul.appendChild(li); });
+    g.appendChild(ul); parent.appendChild(g);
+  }
+  function readItem(li, r, why) {
+    const t = document.createElement(r.url ? "a" : "b");
+    if (r.url) { t.href = r.url; t.target = "_blank"; t.rel = "noopener"; }
+    t.textContent = r.title; t.className = "r-title";
+    const by = document.createElement("span"); by.className = "r-by"; by.textContent = " · " + r.by;
+    const n = document.createElement("span"); n.className = "r-note"; n.textContent = why || r.note;
+    li.append(t, by, n);
+  }
+  function renderStarter() {
+    const el = document.getElementById("starter"); el.textContent = "";
+    const p = starterPlan();
+    if (!p.tryNow.length && !p.think.length) {
+      const e = document.createElement("p"); e.className = "hint";
+      e.textContent = "Answer the quick checks and fill in My plan, and your starter plan will appear here.";
+      el.appendChild(e);
+    }
+    renderList(el, "Try", p.tryNow, (li, t) => { li.textContent = t; });
+    renderList(el, "Read", p.read, (li, r) => readItem(li, r));
+    renderList(el, "Keep thinking about", p.think, (li, t) => { li.textContent = t; });
+  }
+
+  /* ---------- AI prompt ---------- */
+  function aiPromptBody() {
+    const resp = responseLines();
+    return [
+      "I am a K-12 educator in USD 383 (Manhattan-Ogden, Kansas). I just attended a professional development session titled “Teaching in an AI World: Literacy, Learning, and Human Judgment.” Below are my responses from the session handout.",
+      "",
+      "Using my responses, write a short, practical action plan for me:",
+      "1. Three to five action items, ordered from this week to this semester. Each should fit work I already assign, match my subject and grade level where my responses show them, and protect the thinking my students need to practice.",
+      "2. Two or three things I can try myself to build my own AI literacy and fluency.",
+      "3. What to read next, chosen ONLY from the reading list below. Do not recommend any source that is not on the list.",
+      "4. One question to keep thinking about.",
+      "Use only district-approved tools in your suggestions, and never suggest entering student names or identifiable student information into an AI tool. Be specific and concise.",
+      "",
+      "MY RESPONSES",
+      resp.length ? resp.join("\n").trim() : "(I have not filled in the handout yet.)",
+      "",
+      "READING LIST",
+      READING.map(r => "- [" + r.id + "] " + r.title + ", " + r.by + ": " + r.note).join("\n")
+    ].join("\n");
+  }
+  function buildAIPrompt() {
+    document.getElementById("ai-prompt").textContent = aiPromptBody() + "\n\nKeep the whole plan under 400 words.";
+  }
+
+  /* ---------- AI plan rendering ---------- */
+  function renderAIPlan() {
+    const box = document.getElementById("ai-plan");
+    const plan = notes.aiPlan;
+    box.textContent = "";
+    if (!plan) { box.hidden = true; return; }
+    box.hidden = false;
+    const h = document.createElement("h4"); h.className = "ai-head"; h.textContent = "Your tailored plan"; box.appendChild(h);
+    if (plan.summary) { const p = document.createElement("p"); p.textContent = plan.summary; box.appendChild(p); }
+    renderList(box, "Action items", plan.actions || [], (li, a) => {
+      const w = document.createElement("span"); w.className = "when"; w.textContent = a.when || "";
+      const t = document.createElement("b"); t.textContent = a.title || "";
+      const d = document.createElement("span"); d.className = "r-note"; d.textContent = a.detail || "";
+      li.append(w, t, d);
+    });
+    renderList(box, "Try yourself", plan.tryMyself || [], (li, a) => {
+      const t = document.createElement("b"); t.textContent = a.title || "";
+      const d = document.createElement("span"); d.className = "r-note"; d.textContent = a.detail || "";
+      li.append(t, d);
+    });
+    renderList(box, "Read next", (plan.read || []).filter(r => READ_BY_ID[r.id]), (li, r) => readItem(li, READ_BY_ID[r.id], r.why));
+    if (plan.question) renderList(box, "Keep thinking about", [plan.question], (li, t) => { li.textContent = t; });
+    const n = document.createElement("p"); n.className = "hint";
+    n.textContent = "Generated by Claude from your responses" + (plan.at ? " on " + plan.at : "") + ". Judge it the way you judged the Dust Bowl answer.";
+    box.appendChild(n);
+  }
+  function planText(plan) {
+    if (!plan) return [];
+    const L = ["MY TAILORED PLAN (generated by Claude)"];
+    if (plan.summary) L.push(plan.summary);
+    (plan.actions || []).forEach(a => L.push("- [" + (a.when || "") + "] " + a.title + ": " + a.detail));
+    (plan.tryMyself || []).forEach(a => L.push("- Try: " + a.title + ": " + a.detail));
+    (plan.read || []).filter(r => READ_BY_ID[r.id]).forEach(r => L.push("- Read: " + READ_BY_ID[r.id].title + " (" + READ_BY_ID[r.id].by + "). " + (r.why || "")));
+    if (plan.question) L.push("- Keep thinking about: " + plan.question);
+    L.push("");
+    return L;
+  }
+  function starterText() {
+    const p = starterPlan(), L = ["STARTER PLAN"];
+    p.tryNow.forEach(t => L.push("- Try: " + t));
+    p.read.forEach(r => L.push("- Read: " + r.title + " (" + r.by + ")"));
+    p.think.forEach(t => L.push("- Keep thinking about: " + t));
+    L.push("");
+    return L.length > 2 ? L : [];
+  }
+
+  /* ---------- full record ---------- */
+  function buildRecord() {
+    const lines = ["Teaching in an AI World · USD 383 · Session 1", ""]
+      .concat(planText(notes.aiPlan), starterText(), responseLines());
+    const out = lines.join("\n").trim();
+    document.getElementById("plan-out").textContent = out.includes("\n") ? out : "Your responses will collect here as you work through the handout.";
+    return out;
+  }
+
+  function refresh() { buildPrompts(); markProgress(); renderStarter(); buildAIPrompt(); buildRecord(); }
 
   /* ---------- copy buttons ---------- */
   document.querySelectorAll("[data-copy]").forEach(btn => {
@@ -660,6 +909,7 @@ footer .who { font-family: var(--display); font-weight: 700; color: var(--ink); 
       const text = el.textContent;
       const done = msg => { toast.textContent = msg; setTimeout(() => { toast.textContent = ""; }, 2500); };
       const fallback = () => {
+        const d = el.closest("details"); if (d) d.open = true;
         const r = document.createRange(); r.selectNodeContents(el);
         const s = window.getSelection(); s.removeAllRanges(); s.addRange(r);
         done("Selected. Press Ctrl+C or ⌘C to copy.");
@@ -672,18 +922,70 @@ footer .who { font-family: var(--display); font-weight: 700; color: var(--ink); 
   const clearBtn = document.getElementById("clear-btn");
   let armed = false;
   clearBtn.addEventListener("click", () => {
-    if (!armed) { armed = true; clearBtn.textContent = "Click again to clear"; setTimeout(() => { armed = false; clearBtn.textContent = "Clear my notes"; }, 4000); return; }
-    armed = false; clearBtn.textContent = "Clear my notes";
-    notes = { sort: {} };
+    if (!armed) { armed = true; clearBtn.textContent = "Click again to clear everything"; setTimeout(() => { armed = false; clearBtn.textContent = "Clear my responses"; }, 4000); return; }
+    armed = false; clearBtn.textContent = "Clear my responses";
+    notes = { sort: {}, choice: {} };
     noteEls.forEach(el => { el.value = ""; });
-    sorter.querySelectorAll("button").forEach(b => b.setAttribute("aria-pressed", "false"));
-    store.save(notes); refresh();
+    checks.forEach(c => c.querySelectorAll("input").forEach(i => { i.checked = false; }));
+    paintSorter(); store.save(notes); renderAIPlan(); refresh();
   });
 
-  /* ---------- Mentimeter code: set it once here ---------- */
-  const MENTI_CODE = "";
-  if (MENTI_CODE) document.querySelectorAll("[data-menti-code]").forEach(el => { el.textContent = MENTI_CODE; });
+  /* ---------- optional runtime features ---------- */
+  async function lightUp() {
+    if (!window.claude || !window.claude.use) return;
+    const [sample, downloads] = await Promise.all([
+      claude.use("sample").catch(() => null),
+      claude.use("downloads").catch(() => null)
+    ]);
+
+    if (downloads) {
+      const btn = document.getElementById("save-btn");
+      const toast = document.getElementById("save-toast");
+      btn.hidden = false;
+      btn.addEventListener("click", async () => {
+        try {
+          const r = await downloads.save({ filename: "teaching-in-an-ai-world-notes.txt", data: buildRecord() + "\n" });
+          if (r && r.status === "saved") { toast.textContent = "Saved"; setTimeout(() => { toast.textContent = ""; }, 2500); }
+        } catch (e) {
+          if (e && e.code === "unavailable") btn.hidden = true;
+        }
+      });
+    }
+
+    if (sample) {
+      const box = document.getElementById("claude-box");
+      const btn = document.getElementById("claude-btn");
+      const status = document.getElementById("claude-status");
+      box.hidden = false;
+      document.getElementById("own-ai-label").textContent = "Or use your own AI tool";
+      if (notes.aiPlan) btn.textContent = "Rebuild my plan with Claude";
+      btn.addEventListener("click", async () => {
+        btn.disabled = true; status.textContent = "Thinking… this can take up to a minute.";
+        const ids = READING.map(r => r.id).join(", ");
+        const input = aiPromptBody() +
+          "\n\nReturn ONLY a JSON object with this shape and nothing else:\n" +
+          '{"summary": "one or two sentences", "actions": [{"when": "This week" | "This month" | "This semester", "title": "short imperative", "detail": "one or two sentences"}], "tryMyself": [{"title": "...", "detail": "..."}], "read": [{"id": "one of: ' + ids + '", "why": "one sentence tied to my responses"}], "question": "one question"}';
+        try {
+          const plan = await sample.json(input, { modelTier: "default" });
+          if (!plan || !Array.isArray(plan.actions)) throw { code: "invalid_json" };
+          plan.at = new Date().toLocaleDateString();
+          notes.aiPlan = plan; store.save(notes);
+          renderAIPlan(); refresh();
+          status.textContent = "";
+          btn.textContent = "Rebuild my plan with Claude";
+        } catch (e) {
+          const code = e && e.code;
+          if (code === "not_granted") { box.hidden = true; document.getElementById("own-ai-label").textContent = "Use your own AI tool"; return; }
+          status.textContent = code === "rate_limited" ? "Claude is busy or you've reached a usage limit. Try again in a few minutes, or use the prompt below." :
+            code === "invalid_json" ? "Claude's answer came back in an unexpected format. Try once more, or use the prompt below." :
+            "Something went wrong reaching Claude. Use the prompt below with any approved AI tool.";
+        } finally { btn.disabled = false; }
+      });
+    }
+  }
 
   refresh();
+  renderAIPlan();
+  lightUp();
 })();
 </script>
