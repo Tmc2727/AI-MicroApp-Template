@@ -148,6 +148,23 @@ details ul { padding-left: 20px; }
 /* plan summary */
 .plan { white-space: pre-wrap; font-family: var(--body); font-size: 15.5px; background: var(--paper); border: 1px solid var(--rule); border-radius: 8px; padding: 14px 16px; max-height: 360px; overflow: auto; }
 
+/* presenter view (owner and editors only) */
+.presenter-bar { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+body.presenting .masthead .sub, body.presenting .masthead .hint, body.presenting footer,
+body.presenting .part > :not(.part-head):not(.poll) { display: none; }
+body.presenting .masthead { padding-block: 24px 16px; }
+body.presenting .part:not(:has(.poll)), body.presenting .nav li:has(a[href="#try2"]), body.presenting .nav li:has(a[href="#try3"]) { display: none; }
+body.presenting section.part { padding-block: 28px 4px; }
+body.presenting .poll { padding: 24px; }
+body.presenting .poll legend { font-size: clamp(20px, 2.6vw, 28px); line-height: 1.25; }
+body.presenting .opt { padding: 14px 18px; cursor: default; }
+body.presenting .opt .txt { font-size: clamp(17px, 2vw, 21px); }
+body.presenting .opt .pct { font-size: clamp(16px, 1.9vw, 20px); color: var(--ink); }
+body.presenting .opt .radio { display: none; }
+body.presenting .opt { grid-template-columns: 1fr auto; }
+body.presenting .poll-meta { font-size: 14px; }
+body.presenting .wrap { max-width: 960px; }
+
 footer { padding-top: 48px; border-top: 1px solid var(--rule); margin-top: 48px; display: grid; gap: 8px; font-size: 15px; color: var(--ink-soft); }
 footer .who { font-family: var(--display); font-weight: 700; color: var(--ink); font-size: 18px; }
 .sources { font-size: 13.5px; }
@@ -162,6 +179,10 @@ footer .who { font-family: var(--display); font-weight: 700; color: var(--ink); 
   <p class="sub">Teaching in an AI World: Literacy, Learning, and Human Judgment. Use this page alongside the talk to answer quick polls, try the activities, and leave with a plan you can use on Monday.</p>
   <p class="byline">Theresa Merrick Cassidy · Kansas State University</p>
   <p class="hint">Your notes stay in this browser. Poll answers are anonymous and counted together with the room's.</p>
+  <div class="presenter-bar" id="presenter-bar" hidden>
+    <button class="btn" type="button" id="presenter-btn" aria-pressed="false">Presenter view</button>
+    <span class="hint" id="presenter-note">Only you and editors see this button. It shows every poll's results without voting.</span>
+  </div>
 </header>
 
 <nav class="nav" aria-label="Handout sections">
@@ -687,6 +708,7 @@ footer .who { font-family: var(--display); font-weight: 700; color: var(--ink); 
 
   /* ---------- polls ---------- */
   const polls = [...document.querySelectorAll(".poll")];
+  let presenting = false;
   let counts = null;          // {pollId: {value: n}} from everyone, or null when results aren't available
   let liveState = "pending";  // pending | live | readonly | offline
 
@@ -694,11 +716,11 @@ footer .who { font-family: var(--display); font-weight: 700; color: var(--ink); 
     polls.forEach(p => {
       const id = p.dataset.poll;
       const mine = notes.polls[id];
-      p.querySelectorAll("input").forEach(i => { i.checked = i.value === mine; });
+      p.querySelectorAll("input").forEach(i => { i.checked = !presenting && i.value === mine; i.disabled = presenting; });
       const meta = p.querySelector(".poll-meta");
       const c = counts && counts[id];
       const total = c ? Object.values(c).reduce((a, b) => a + b, 0) : 0;
-      const show = !!mine && total > 0;
+      const show = (presenting || !!mine) && total > 0;
       p.classList.toggle("revealed", show);
       p.querySelectorAll(".opt").forEach(opt => {
         const v = opt.querySelector("input").value;
@@ -707,6 +729,7 @@ footer .who { font-family: var(--display); font-weight: 700; color: var(--ink); 
         opt.querySelector(".pct").textContent = show ? pct + "%" : "";
       });
       if (show) meta.textContent = total + (total === 1 ? " response" : " responses");
+      else if (presenting) meta.textContent = liveState === "pending" ? "Loading results…" : "No responses yet";
       else if (!mine) meta.textContent = liveState === "offline" ? "" : "Answer to see the room";
       else if (liveState === "pending") meta.textContent = "Loading results…";
       else if (liveState === "offline") meta.textContent = "Saved on this device";
@@ -740,6 +763,7 @@ footer .who { font-family: var(--display); font-weight: 700; color: var(--ink); 
       db = d;
       if (!db) { liveState = "offline"; renderPolls(); return; }
       uid = u ? await u.id() : null;
+      if (u && ((await u.isOwner()) || (await u.canEdit()))) setupPresenter();
       const canWrite = u ? await u.can("data.write") : null;
       liveState = (uid && canWrite !== false) ? "live" : "readonly";
       db.collection("votes").onSnapshot(snap => {
@@ -758,6 +782,23 @@ footer .who { font-family: var(--display); font-weight: 700; color: var(--ink); 
       }, () => { liveState = "offline"; renderPolls(); });
       renderPolls();
     } catch (e) { liveState = "offline"; renderPolls(); }
+  }
+
+  function setupPresenter() {
+    const bar = document.getElementById("presenter-bar");
+    const btn = document.getElementById("presenter-btn");
+    const note = document.getElementById("presenter-note");
+    bar.hidden = false;
+    const apply = on => {
+      presenting = on;
+      document.body.classList.toggle("presenting", on);
+      btn.setAttribute("aria-pressed", on ? "true" : "false");
+      btn.textContent = on ? "Exit presenter view" : "Presenter view";
+      note.textContent = on ? "Live results from everyone who has voted. Updates as votes arrive." : "Only you and editors see this button. It shows every poll's results without voting.";
+      renderPolls();
+    };
+    btn.addEventListener("click", () => apply(!presenting));
+    if (location.hash === "#presenter") apply(true);
   }
 
   refresh();
