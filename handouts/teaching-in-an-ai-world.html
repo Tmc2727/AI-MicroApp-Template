@@ -1,0 +1,767 @@
+<title>Teaching in an AI World</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,600;1,7..72,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: one reading column that follows the talk in order; a sticky strip of section chips; polls, notes and planners sit inline where the slides ask for them. */
+:root {
+  --paper: #f6f7f9;
+  --sheet: #ffffff;
+  --ink: #17233a;
+  --ink-soft: #4a5670;
+  --rule: #d8dce5;
+  --accent: #c2410c;
+  --accent-soft: #fbe6da;
+  --bar: #2f5d8a;
+  --bar-soft: #dfe8f2;
+  --mine: #c2410c;
+  --focus: #2f5d8a;
+  --display: "Bricolage Grotesque", "Avenir Next", "Segoe UI", system-ui, sans-serif;
+  --body: "Literata", Georgia, "Times New Roman", serif;
+  --mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #10151f; --sheet: #182030; --ink: #e8ecf3; --ink-soft: #a9b3c6; --rule: #2c364a;
+    --accent: #f08a4b; --accent-soft: #3a2418; --bar: #7fa8d6; --bar-soft: #22314a; --mine: #f08a4b; --focus: #7fa8d6;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #10151f; --sheet: #182030; --ink: #e8ecf3; --ink-soft: #a9b3c6; --rule: #2c364a;
+  --accent: #f08a4b; --accent-soft: #3a2418; --bar: #7fa8d6; --bar-soft: #22314a; --mine: #f08a4b; --focus: #7fa8d6;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+body { background: var(--paper); color: var(--ink); font-family: var(--body); font-size: 17px; line-height: 1.6; }
+.wrap { max-width: 760px; margin: 0 auto; padding-inline: 18px; padding-block: 0 72px; }
+h1, h2, h3 { font-family: var(--display); text-wrap: balance; line-height: 1.12; margin: 0; }
+p { margin: 0; }
+a { color: var(--bar); }
+:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; border-radius: 4px; }
+
+/* header */
+.masthead { padding-block: 40px 28px; display: grid; gap: 14px; }
+.eyebrow { font-family: var(--mono); font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-soft); }
+.masthead h1 { font-size: clamp(34px, 7vw, 54px); font-weight: 800; letter-spacing: -.02em; }
+.masthead h1 .three { display: block; color: var(--accent); }
+.masthead .sub { font-size: 19px; color: var(--ink-soft); max-width: 58ch; }
+.byline { font-family: var(--mono); font-size: 13px; color: var(--ink-soft); }
+
+/* section nav */
+.nav { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; background: var(--paper); border-bottom: 1px solid var(--rule); margin-inline: -18px; padding: 10px 18px; overflow-x: auto; scrollbar-width: none; }
+.nav::-webkit-scrollbar { display: none; }
+.nav ol { list-style: none; display: flex; gap: 6px; margin: 0; padding: 0; width: max-content; }
+.nav a { display: inline-flex; align-items: center; gap: 6px; font-family: var(--mono); font-size: 12.5px; text-decoration: none; color: var(--ink-soft); border: 1px solid var(--rule); border-radius: 999px; padding: 5px 11px; background: var(--sheet); white-space: nowrap; }
+.nav a .dot { width: 7px; height: 7px; border-radius: 50%; border: 1.5px solid currentColor; }
+.nav a.done .dot { background: var(--accent); border-color: var(--accent); }
+.nav a:hover { color: var(--ink); }
+
+/* sections */
+section.part { padding-block: 44px 8px; display: grid; gap: 18px; scroll-margin-top: 60px; }
+.part-head { display: grid; gap: 6px; }
+.part-head .slides { font-family: var(--mono); font-size: 12px; letter-spacing: .06em; text-transform: uppercase; color: var(--accent); }
+.part-head h2 { font-size: clamp(25px, 4.6vw, 32px); font-weight: 700; letter-spacing: -.01em; }
+.lede { color: var(--ink-soft); max-width: 62ch; }
+blockquote { margin: 0; padding: 4px 0 4px 18px; border-left: 3px solid var(--accent); font-style: italic; }
+blockquote cite { display: block; font-style: normal; font-family: var(--mono); font-size: 12px; color: var(--ink-soft); margin-top: 6px; }
+
+/* frameworks */
+.trio { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+.quad { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+.tile { border-top: 3px solid var(--bar); padding-top: 10px; display: grid; gap: 4px; align-content: start; min-width: 0; }
+.tile b { font-family: var(--mono); font-weight: 500; font-size: 12.5px; letter-spacing: .08em; text-transform: uppercase; }
+.tile span { font-size: 15px; color: var(--ink-soft); line-height: 1.45; }
+@media (max-width: 560px) { .trio { grid-template-columns: 1fr; } }
+
+/* activity card */
+.card { background: var(--sheet); border: 1px solid var(--rule); border-radius: 10px; padding: 20px; display: grid; gap: 16px; }
+.card.try { border-color: var(--accent); }
+.card-label { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
+.tag { font-family: var(--mono); font-size: 11.5px; letter-spacing: .08em; text-transform: uppercase; padding: 3px 9px; border-radius: 4px; background: var(--bar-soft); color: var(--ink); }
+.card.try .tag { background: var(--accent-soft); }
+.card h3 { font-size: 21px; font-weight: 700; }
+.hint { font-size: 14.5px; color: var(--ink-soft); }
+
+/* fields */
+.field { display: grid; gap: 6px; }
+.field label, .fieldset-label { font-family: var(--display); font-weight: 600; font-size: 15.5px; }
+.field label small { font-family: var(--body); font-weight: 400; color: var(--ink-soft); font-size: 14px; }
+textarea, input[type="text"] { width: 100%; font: inherit; font-size: 16px; line-height: 1.5; color: var(--ink); background: var(--paper); border: 1px solid var(--rule); border-radius: 8px; padding: 10px 12px; }
+textarea { min-height: 76px; resize: vertical; }
+textarea:focus, input[type="text"]:focus { outline: 2px solid var(--focus); outline-offset: 0; border-color: transparent; }
+.grid2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+@media (max-width: 560px) { .grid2, .quad { grid-template-columns: 1fr; } }
+
+/* sample AI response */
+.ai-says { font-family: var(--mono); font-size: 14.5px; line-height: 1.6; background: var(--paper); border: 1px dashed var(--rule); border-radius: 8px; padding: 14px 16px; }
+.ai-says::before { content: "AI response"; display: block; font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-soft); margin-bottom: 6px; }
+
+details { border-top: 1px solid var(--rule); padding-top: 12px; }
+summary { cursor: pointer; font-family: var(--display); font-weight: 600; font-size: 15px; color: var(--bar); }
+details p, details ul { margin-top: 8px; font-size: 15.5px; }
+details ul { padding-left: 20px; }
+
+/* buttons */
+.btn { font-family: var(--display); font-weight: 600; font-size: 15px; border-radius: 8px; padding: 9px 16px; border: 1px solid var(--ink); background: var(--ink); color: var(--paper); cursor: pointer; }
+.btn.ghost { background: transparent; color: var(--ink); border-color: var(--rule); }
+.btn:hover { filter: brightness(1.1); }
+.row { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+.toast { font-family: var(--mono); font-size: 13px; color: var(--accent); }
+
+/* polls */
+.poll fieldset { border: 0; margin: 0; padding: 0; display: grid; gap: 8px; }
+.poll legend { padding: 0; margin-bottom: 4px; }
+.opt { position: relative; display: grid; grid-template-columns: auto 1fr auto; gap: 12px; align-items: center; border: 1px solid var(--rule); border-radius: 8px; padding: 10px 14px; cursor: pointer; overflow: hidden; background: var(--sheet); }
+.opt input { position: absolute; opacity: 0; pointer-events: none; }
+.opt .fill { position: absolute; inset: 0 auto 0 0; width: 0; background: var(--bar-soft); transition: width .5s ease; z-index: 0; }
+.opt > *:not(.fill) { position: relative; z-index: 1; }
+.opt .radio { width: 18px; height: 18px; border-radius: 50%; border: 2px solid var(--ink-soft); display: grid; place-items: center; }
+.opt input:checked ~ .radio { border-color: var(--mine); }
+.opt input:checked ~ .radio::after { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--mine); }
+.opt input:checked ~ .txt { font-weight: 600; }
+.opt input:focus-visible ~ .radio { outline: 3px solid var(--focus); outline-offset: 2px; }
+.opt .txt { font-size: 15.5px; line-height: 1.4; min-width: 0; }
+.opt .pct { font-family: var(--mono); font-size: 14px; font-variant-numeric: tabular-nums; color: var(--ink-soft); min-width: 3.5ch; text-align: right; }
+.poll.revealed .opt input:checked ~ .pct { color: var(--mine); font-weight: 500; }
+.poll-meta { font-family: var(--mono); font-size: 12.5px; color: var(--ink-soft); }
+@media (prefers-reduced-motion: reduce) { .opt .fill { transition: none; } }
+
+/* sorter */
+.sort-list { display: grid; gap: 8px; }
+.sort-item { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 10px; align-items: center; border-bottom: 1px solid var(--rule); padding-bottom: 8px; }
+.sort-item span { font-size: 15.5px; }
+.seg { display: inline-flex; border: 1px solid var(--rule); border-radius: 8px; overflow: hidden; }
+.seg button { font-family: var(--mono); font-size: 12px; padding: 6px 9px; border: 0; background: var(--sheet); color: var(--ink-soft); cursor: pointer; }
+.seg button + button { border-left: 1px solid var(--rule); }
+.seg button[aria-pressed="true"] { background: var(--ink); color: var(--paper); }
+@media (max-width: 520px) { .sort-item { grid-template-columns: 1fr; } }
+
+/* prompt preview */
+.prompt-out { font-family: var(--mono); font-size: 14px; line-height: 1.6; white-space: pre-wrap; background: var(--paper); border-left: 3px solid var(--bar); padding: 12px 14px; border-radius: 0 8px 8px 0; min-height: 3em; }
+
+/* habits */
+.habits { display: flex; flex-wrap: wrap; gap: 8px; }
+.habits span { font-family: var(--display); font-weight: 600; font-size: 15px; padding: 6px 12px; border-radius: 999px; border: 1px solid var(--rule); background: var(--sheet); }
+
+/* plan summary */
+.plan { white-space: pre-wrap; font-family: var(--body); font-size: 15.5px; background: var(--paper); border: 1px solid var(--rule); border-radius: 8px; padding: 14px 16px; max-height: 360px; overflow: auto; }
+
+footer { padding-top: 48px; border-top: 1px solid var(--rule); margin-top: 48px; display: grid; gap: 8px; font-size: 15px; color: var(--ink-soft); }
+footer .who { font-family: var(--display); font-weight: 700; color: var(--ink); font-size: 18px; }
+.sources { font-size: 13.5px; }
+.sources li { margin-bottom: 4px; }
+</style>
+
+<div class="wrap">
+
+<header class="masthead">
+  <div class="eyebrow">USD 383 · October 2026 · Session 1 handout</div>
+  <h1>Normal, Revolutionary, <span class="three">or Against the Natural Order?</span></h1>
+  <p class="sub">Teaching in an AI World: Literacy, Learning, and Human Judgment. Use this page alongside the talk to answer quick polls, try the activities, and leave with a plan you can use on Monday.</p>
+  <p class="byline">Theresa Merrick Cassidy · Kansas State University</p>
+  <p class="hint">Your notes stay in this browser. Poll answers are anonymous and counted together with the room's.</p>
+</header>
+
+<nav class="nav" aria-label="Handout sections">
+  <ol id="navlist">
+    <li><a href="#adams" data-sec="adams"><span class="dot"></span>Adams</a></li>
+    <li><a href="#care" data-sec="care"><span class="dot"></span>With / Without / About</a></li>
+    <li><a href="#literacy" data-sec="literacy"><span class="dot"></span>Literacy</a></li>
+    <li><a href="#try1" data-sec="try1"><span class="dot"></span>Try it 1</a></li>
+    <li><a href="#classroom" data-sec="classroom"><span class="dot"></span>Classroom</a></li>
+    <li><a href="#try2" data-sec="try2"><span class="dot"></span>Try it 2</a></li>
+    <li><a href="#rules" data-sec="rules"><span class="dot"></span>Rules</a></li>
+    <li><a href="#teachers" data-sec="teachers"><span class="dot"></span>Teacher use</a></li>
+    <li><a href="#try3" data-sec="try3"><span class="dot"></span>Try it 3</a></li>
+    <li><a href="#plan" data-sec="plan"><span class="dot"></span>My plan</a></li>
+  </ol>
+</nav>
+
+<!-- 1. Adams -->
+<section class="part" id="adams">
+  <div class="part-head">
+    <span class="slides">Slides 1–5</span>
+    <h2>Where does AI sit for you?</h2>
+  </div>
+  <blockquote>
+    1. Anything that is in the world when you're born is normal and ordinary. 2. Anything invented between when you're fifteen and thirty-five is new and exciting and revolutionary. 3. Anything invented after you're thirty-five is against the natural order of things.
+    <cite>Douglas Adams, The Salmon of Doubt (2002), p. 60</cite>
+  </blockquote>
+
+  <div class="card poll" data-poll="adams">
+    <div class="card-label"><span class="tag">Poll</span><span class="poll-meta"></span></div>
+    <fieldset>
+      <legend class="fieldset-label">Right now, generative AI feels…</legend>
+      <label class="opt"><span class="fill"></span><input type="radio" name="adams" value="normal"><span class="radio"></span><span class="txt">Normal and ordinary: part of how the world works</span><span class="pct"></span></label>
+      <label class="opt"><span class="fill"></span><input type="radio" name="adams" value="revolutionary"><span class="radio"></span><span class="txt">New, exciting, revolutionary</span><span class="pct"></span></label>
+      <label class="opt"><span class="fill"></span><input type="radio" name="adams" value="against"><span class="radio"></span><span class="txt">Against the natural order of things</span><span class="pct"></span></label>
+      <label class="opt"><span class="fill"></span><input type="radio" name="adams" value="mixed"><span class="radio"></span><span class="txt">Some of each, depending on the day</span><span class="pct"></span></label>
+    </fieldset>
+  </div>
+
+  <div class="card">
+    <div class="field">
+      <label for="n-students">Where do you think most of your students would land? <small>What would they say that you might not?</small></label>
+      <textarea id="n-students" data-note="students"></textarea>
+    </div>
+  </div>
+
+  <blockquote>
+    Predicting the future is a mug's game.
+    <cite>Douglas Adams, "Predicting the Future," The Salmon of Doubt, pp. 63–64</cite>
+  </blockquote>
+  <p class="lede">We still have to prepare students to live there. That makes knowledge, judgment, and adaptability more durable goals than mastery of today's tools.</p>
+</section>
+
+<!-- 2. Duty of care -->
+<section class="part" id="care">
+  <div class="part-head">
+    <span class="slides">Slides 6–7</span>
+    <h2>"Ubiquitous AI" and a duty of care</h2>
+  </div>
+  <p class="lede">AI is increasingly part of the environment students learn in, not only a separate tool they choose to open. Different ages and learning goals call for different relationships with it.</p>
+  <div class="trio">
+    <div class="tile"><b>With AI</b><span>Use it when it can extend learning, feedback, access, comparison, creation, or inquiry.</span></div>
+    <div class="tile"><b>Without AI</b><span>Protect the practice students need to build knowledge, attention, fluency, and independent capacity.</span></div>
+    <div class="tile"><b>About AI</b><span>Help students understand what AI is doing, how to evaluate it, and what responsibilities stay with them.</span></div>
+  </div>
+
+  <div class="card poll" data-poll="care">
+    <div class="card-label"><span class="tag">Poll</span><span class="poll-meta"></span></div>
+    <fieldset>
+      <legend class="fieldset-label">For the students you teach, which needs the most attention this year?</legend>
+      <label class="opt"><span class="fill"></span><input type="radio" name="care" value="with"><span class="radio"></span><span class="txt">Thinking with AI</span><span class="pct"></span></label>
+      <label class="opt"><span class="fill"></span><input type="radio" name="care" value="without"><span class="radio"></span><span class="txt">Thinking without AI</span><span class="pct"></span></label>
+      <label class="opt"><span class="fill"></span><input type="radio" name="care" value="about"><span class="radio"></span><span class="txt">Thinking about AI</span><span class="pct"></span></label>
+    </fieldset>
+  </div>
+
+  <div class="quad">
+    <div class="tile"><b>Authentic learning</b><span>Learning should be driven by personal understanding.</span></div>
+    <div class="tile"><b>Human thinking</b><span>Technology should support, not replace, critical and ethical thinking.</span></div>
+    <div class="tile"><b>Responsible use</b><span>Students and staff remain accountable for how AI is used.</span></div>
+    <div class="tile"><b>Privacy</b><span>Approved tools and data protections come first.</span></div>
+  </div>
+  <p class="hint">USD 383 AI Guidelines and Board Policy IIBE.</p>
+  <div class="card">
+    <div class="field">
+      <label for="n-value">Which of the district's four values is hardest to make visible in your classroom? <small>Why?</small></label>
+      <textarea id="n-value" data-note="value"></textarea>
+    </div>
+  </div>
+</section>
+
+<!-- 3. Literacy vs fluency -->
+<section class="part" id="literacy">
+  <div class="part-head">
+    <span class="slides">Slides 8–9</span>
+    <h2>AI literacy and AI fluency</h2>
+  </div>
+  <div class="grid2">
+    <div class="tile"><b>AI literacy</b><span>Understand · Evaluate · Question · Decide. "Do I understand enough to make a good judgment?"</span></div>
+    <div class="tile"><b>AI fluency</b><span>Delegate · Describe · Discern · Use responsibly. "Can I work effectively with the system when I choose to use it?"</span></div>
+  </div>
+  <p class="lede">Everyone needs literacy. The level of fluency can vary by age, purpose, and context. Fluent output still needs evaluation: search can improve grounding, but it does not remove the need for judgment.</p>
+
+  <div class="card poll" data-poll="fluency">
+    <div class="card-label"><span class="tag">Poll</span><span class="poll-meta"></span></div>
+    <fieldset>
+      <legend class="fieldset-label">Which best describes your own AI use right now?</legend>
+      <label class="opt"><span class="fill"></span><input type="radio" name="fluency" value="none"><span class="radio"></span><span class="txt">I haven't really tried it yet</span><span class="pct"></span></label>
+      <label class="opt"><span class="fill"></span><input type="radio" name="fluency" value="occasional"><span class="radio"></span><span class="txt">I've experimented a few times</span><span class="pct"></span></label>
+      <label class="opt"><span class="fill"></span><input type="radio" name="fluency" value="regular"><span class="radio"></span><span class="txt">I use it regularly for some tasks</span><span class="pct"></span></label>
+      <label class="opt"><span class="fill"></span><input type="radio" name="fluency" value="daily"><span class="radio"></span><span class="txt">It's part of my daily workflow</span><span class="pct"></span></label>
+    </fieldset>
+  </div>
+</section>
+
+<!-- 4. Try it 1 -->
+<section class="part" id="try1">
+  <div class="part-head">
+    <span class="slides">Slide 10</span>
+    <h2>Ask AI about something you know well</h2>
+  </div>
+  <div class="card try">
+    <div class="card-label"><span class="tag">Try it now · about 1 minute</span></div>
+    <p class="hint">Pick your subject, a hobby, your hometown, or a process you do at work. Choose something where you can actually judge the answer, not something obscure meant to make it fail.</p>
+    <div class="field">
+      <label for="t1-topic">What I asked about</label>
+      <input type="text" id="t1-topic" data-note="t1topic">
+    </div>
+    <div class="grid2">
+      <div class="field"><label for="t1-right">What is right?</label><textarea id="t1-right" data-note="t1right"></textarea></div>
+      <div class="field"><label for="t1-missing">What is missing?</label><textarea id="t1-missing" data-note="t1missing"></textarea></div>
+      <div class="field"><label for="t1-over">What is oversimplified?</label><textarea id="t1-over" data-note="t1over"></textarea></div>
+      <div class="field"><label for="t1-know">How do I know?</label><textarea id="t1-know" data-note="t1know"></textarea></div>
+    </div>
+    <p class="hint">Then turn to a neighbor: one thing the answer did reasonably well, and one thing you noticed only because you knew the subject.</p>
+  </div>
+
+  <div class="card poll" data-poll="t1">
+    <div class="card-label"><span class="tag">Poll</span><span class="poll-meta"></span></div>
+    <fieldset>
+      <legend class="fieldset-label">Overall, the answer you got was…</legend>
+      <label class="opt"><span class="fill"></span><input type="radio" name="t1" value="solid"><span class="radio"></span><span class="txt">Solid. I'd stand behind most of it</span><span class="pct"></span></label>
+      <label class="opt"><span class="fill"></span><input type="radio" name="t1" value="incomplete"><span class="radio"></span><span class="txt">Accurate but incomplete</span><span class="pct"></span></label>
+      <label class="opt"><span class="fill"></span><input type="radio" name="t1" value="misleading"><span class="radio"></span><span class="txt">Plausible, but misleading in places</span><span class="pct"></span></label>
+      <label class="opt"><span class="fill"></span><input type="radio" name="t1" value="wrong"><span class="radio"></span><span class="txt">Wrong on something that matters</span><span class="pct"></span></label>
+    </fieldset>
+  </div>
+</section>
+
+<!-- 5. Classroom moves -->
+<section class="part" id="classroom">
+  <div class="part-head">
+    <span class="slides">Slides 11–14, 16–17</span>
+    <h2>Small classroom moves</h2>
+  </div>
+  <p class="lede">You don't need a new AI unit. As you go, ask whether one of these fits something you already teach.</p>
+
+  <div class="card">
+    <div class="card-label"><span class="tag">Be the student</span></div>
+    <h3>Evaluate an AI response together</h3>
+    <div class="ai-says">The Dust Bowl was caused by a severe drought across the Great Plains in the 1930s. With little rain, the soil dried out and strong winds created massive dust storms.</div>
+    <div class="grid2">
+      <div class="field"><label for="db-right">What is right?</label><textarea id="db-right" data-note="dbright"></textarea></div>
+      <div class="field"><label for="db-missing">What is missing?</label><textarea id="db-missing" data-note="dbmissing"></textarea></div>
+      <div class="field"><label for="db-verify">What would you verify?</label><textarea id="db-verify" data-note="dbverify"></textarea></div>
+      <div class="field"><label for="db-know">How do you know?</label><textarea id="db-know" data-note="dbknow"></textarea></div>
+    </div>
+    <details>
+      <summary>What students often notice</summary>
+      <p>Drought and wind are true but incomplete. Land-use practices, farming methods, and economic context matter too. The habit to build is asking what is missing and what evidence would help decide, not only catching a false statement.</p>
+    </details>
+    <p class="hint">Students don't need individual AI accounts for this activity.</p>
+  </div>
+
+  <div class="card">
+    <div class="card-label"><span class="tag">Planner</span></div>
+    <h3>Student first, AI later</h3>
+    <p class="hint">Where does the student need the practice? Protect that step. AI can enter afterward as a comparison, challenger, source of alternatives, or feedback partner.</p>
+    <div class="field">
+      <label for="sf-task">A task I already assign</label>
+      <input type="text" id="sf-task" data-note="sftask" placeholder="e.g., Lab report conclusion, 10th-grade chemistry">
+    </div>
+    <div class="grid2">
+      <div class="field"><label for="sf-first">Student does first (no AI) <small>the thinking they're practicing</small></label><textarea id="sf-first" data-note="sffirst" placeholder="e.g., Write a claim from their own data"></textarea></div>
+      <div class="field"><label for="sf-later">Then AI enters to… <small>compare, challenge, generate alternatives</small></label><textarea id="sf-later" data-note="sflater" placeholder="e.g., Compare their claim with an AI claim from the same data"></textarea></div>
+    </div>
+  </div>
+
+  <div class="quad">
+    <div class="tile"><b>Ask AI step</b><span>Ask AI the same research question, compare with your sources, mark what's accurate, questionable, or missing, and explain what you'd trust and why.</span></div>
+    <div class="tile"><b>Short reflection</b><span>What was difficult? What decisions did you make? What did you change, and why? Process work should reveal learning, not become paperwork.</span></div>
+  </div>
+
+  <div class="card poll" data-poll="move">
+    <div class="card-label"><span class="tag">Poll</span><span class="poll-meta"></span></div>
+    <fieldset>
+      <legend class="fieldset-label">Which move could you add to an existing assignment soonest?</legend>
+      <label class="opt"><span class="fill"></span><input type="radio" name="move" value="evaluate"><span class="radio"></span><span class="txt">Evaluate an AI response together</span><span class="pct"></span></label>
+      <label class="opt"><span class="fill"></span><input type="radio" name="move" value="before"><span class="radio"></span><span class="txt">Student thinking first, then compare with AI</span><span class="pct"></span></label>
+      <label class="opt"><span class="fill"></span><input type="radio" name="move" value="askai"><span class="radio"></span><span class="txt">Add an "Ask AI" step to research</span><span class="pct"></span></label>
+      <label class="opt"><span class="fill"></span><input type="radio" name="move" value="reflect"><span class="radio"></span><span class="txt">One short reflection on a writing task</span><span class="pct"></span></label>
+    </fieldset>
+  </div>
+</section>
+
+<!-- 6. Try it 2: prompt builder -->
+<section class="part" id="try2">
+  <div class="part-head">
+    <span class="slides">Slide 15</span>
+    <h2>Write a prompt that doesn't hand over the answer</h2>
+  </div>
+  <div class="card try">
+    <div class="card-label"><span class="tag">Try it now</span></div>
+    <p class="hint">Good prompts give AI a role, set boundaries, and specify the output style and tone. Fill these in and the prompt builds itself below.</p>
+    <div class="field"><label for="pb-role">Role <small>Who should the AI act as?</small></label><input type="text" id="pb-role" data-note="pbrole" placeholder="a patient tutor for a 9th-grade biology student"></div>
+    <div class="field"><label for="pb-goal">The student is working on…</label><input type="text" id="pb-goal" data-note="pbgoal" placeholder="explaining why cells divide"></div>
+    <div class="field"><label for="pb-bounds">Boundaries <small>What must the AI not do?</small></label><input type="text" id="pb-bounds" data-note="pbbounds" placeholder="Do not give me the answer or write any sentences for me."></div>
+    <div class="field"><label for="pb-style">Output style and tone</label><input type="text" id="pb-style" data-note="pbstyle" placeholder="Ask me one question at a time, in a friendly tone, and wait for my reply."></div>
+    <div class="prompt-out" id="pb-out" aria-live="polite"></div>
+    <div class="row"><button class="btn" type="button" data-copy="pb-out">Copy prompt</button><span class="toast" data-toast="pb-out"></span></div>
+  </div>
+</section>
+
+<!-- 7. Rules -->
+<section class="part" id="rules">
+  <div class="part-head">
+    <span class="slides">Slide 18</span>
+    <h2>Make the AI rules visible for each assignment</h2>
+  </div>
+  <blockquote>Common sense won't tell you. We have to tell each other.<cite>Douglas Adams, "The Rules," The Salmon of Doubt, p. 25</cite></blockquote>
+  <div class="quad">
+    <div class="tile"><b>No AI</b><span>I need you to practice this yourself.</span></div>
+    <div class="tile"><b>After human attempt</b><span>Build your own thinking first.</span></div>
+    <div class="tile"><b>AI allowed</b><span>Verify, revise, and disclose meaningful assistance.</span></div>
+    <div class="tile"><b>AI is the task</b><span>We are evaluating what the system produces.</span></div>
+  </div>
+
+  <div class="card poll" data-poll="rules">
+    <div class="card-label"><span class="tag">Poll</span><span class="poll-meta"></span></div>
+    <fieldset>
+      <legend class="fieldset-label">Think of your next major assignment. Which level fits it best?</legend>
+      <label class="opt"><span class="fill"></span><input type="radio" name="rules" value="no"><span class="radio"></span><span class="txt">No AI</span><span class="pct"></span></label>
+      <label class="opt"><span class="fill"></span><input type="radio" name="rules" value="after"><span class="radio"></span><span class="txt">After human attempt</span><span class="pct"></span></label>
+      <label class="opt"><span class="fill"></span><input type="radio" name="rules" value="allowed"><span class="radio"></span><span class="txt">AI allowed</span><span class="pct"></span></label>
+      <label class="opt"><span class="fill"></span><input type="radio" name="rules" value="task"><span class="radio"></span><span class="txt">AI is the task</span><span class="pct"></span></label>
+    </fieldset>
+  </div>
+
+  <div class="card">
+    <div class="field">
+      <label for="r-why">Write the one-sentence reason you'd give students <small>"I need you to do this part without AI because…"</small></label>
+      <textarea id="r-why" data-note="rwhy"></textarea>
+    </div>
+  </div>
+</section>
+
+<!-- 8. Teacher use -->
+<section class="part" id="teachers">
+  <div class="part-head">
+    <span class="slides">Slides 19–24</span>
+    <h2>The same discernment applies to us</h2>
+  </div>
+  <p class="lede">AI is being built directly into planning, materials, differentiation, feedback, and repeated tasks. A product menu is not a pedagogical argument. Testing a tool is not the same as adopting it.</p>
+
+  <div class="card poll" data-poll="expect">
+    <div class="card-label"><span class="tag">Poll</span><span class="poll-meta"></span></div>
+    <fieldset>
+      <legend class="fieldset-label">If you were the student: what would you most expect from a teacher who uses AI in your class?</legend>
+      <label class="opt"><span class="fill"></span><input type="radio" name="expect" value="engage"><span class="radio"></span><span class="txt">That they actually engage with my work</span><span class="pct"></span></label>
+      <label class="opt"><span class="fill"></span><input type="radio" name="expect" value="human"><span class="radio"></span><span class="txt">That a person makes the consequential judgments</span><span class="pct"></span></label>
+      <label class="opt"><span class="fill"></span><input type="radio" name="expect" value="transparent"><span class="radio"></span><span class="txt">That they tell me when AI shaped my feedback or grade</span><span class="pct"></span></label>
+      <label class="opt"><span class="fill"></span><input type="radio" name="expect" value="same"><span class="radio"></span><span class="txt">That they follow the same rules they set for me</span><span class="pct"></span></label>
+    </fieldset>
+  </div>
+
+  <div class="card">
+    <div class="card-label"><span class="tag">Sort it</span></div>
+    <h3>What would you hand to AI?</h3>
+    <p class="hint">Mark each task. There's no answer key. Your sort shows where you draw your own lines.</p>
+    <div class="sort-list" id="sorter"></div>
+  </div>
+
+  <div class="card poll" data-poll="feedback">
+    <div class="card-label"><span class="tag">Poll</span><span class="poll-meta"></span></div>
+    <fieldset>
+      <legend class="fieldset-label">AI drafts written feedback on student essays, and the teacher reviews it before returning it. Your view?</legend>
+      <label class="opt"><span class="fill"></span><input type="radio" name="feedback" value="fine"><span class="radio"></span><span class="txt">Fine as is: it saves time for other teaching</span><span class="pct"></span></label>
+      <label class="opt"><span class="fill"></span><input type="radio" name="feedback" value="disclose"><span class="radio"></span><span class="txt">Fine, if students are told</span><span class="pct"></span></label>
+      <label class="opt"><span class="fill"></span><input type="radio" name="feedback" value="lowstakes"><span class="radio"></span><span class="txt">Only for low-stakes drafts</span><span class="pct"></span></label>
+      <label class="opt"><span class="fill"></span><input type="radio" name="feedback" value="no"><span class="radio"></span><span class="txt">Not something I'd delegate</span><span class="pct"></span></label>
+    </fieldset>
+  </div>
+
+  <div class="trio">
+    <div class="tile"><b>Comparison</b><span>Put two explanations, solutions, or perspectives side by side and ask students to judge.</span></div>
+    <div class="tile"><b>Simulation</b><span>Role-play a stakeholder, client, historical perspective, or practice conversation.</span></div>
+    <div class="tile"><b>Iteration</b><span>Generate alternatives, counterarguments, practice cases, or another version to improve.</span></div>
+  </div>
+  <p class="hint">Start with the learning goal, then ask what the technology makes possible.</p>
+</section>
+
+<!-- 9. Try it 3 -->
+<section class="part" id="try3">
+  <div class="part-head">
+    <span class="slides">Slide 25</span>
+    <h2>Ask AI to help, after students think</h2>
+  </div>
+  <div class="card try">
+    <div class="card-label"><span class="tag">Try it now · about 90 seconds</span></div>
+    <div class="grid2">
+      <div class="field"><label for="t3-skill">My students need to practice…</label><input type="text" id="t3-skill" data-note="t3skill" placeholder="using evidence to support a claim"></div>
+      <div class="field"><label for="t3-struggle">They currently struggle with…</label><input type="text" id="t3-struggle" data-note="t3struggle" placeholder="choosing evidence that actually fits"></div>
+    </div>
+    <div class="prompt-out" id="t3-out" aria-live="polite"></div>
+    <div class="row"><button class="btn" type="button" data-copy="t3-out">Copy prompt</button><span class="toast" data-toast="t3-out"></span></div>
+    <div class="grid2">
+      <div class="field"><label for="t3-use">A suggestion I'd actually use</label><textarea id="t3-use" data-note="t3use"></textarea></div>
+      <div class="field"><label for="t3-reject">One I'd reject, and why</label><textarea id="t3-reject" data-note="t3reject"></textarea></div>
+    </div>
+    <p class="hint">The ability to reject a suggestion is part of AI fluency too. Sometimes the most important thing you do is say, "No, that would remove exactly the thinking I need students to practice."</p>
+  </div>
+</section>
+
+<!-- 10. Plan -->
+<section class="part" id="plan">
+  <div class="part-head">
+    <span class="slides">Slides 26–27</span>
+    <h2>What feels revolutionary to us may feel ordinary to our students</h2>
+  </div>
+  <p class="lede">Teachers will help shape what ordinary AI use looks like.</p>
+  <div class="habits"><span>verify</span><span>ask what is missing</span><span>protect some thinking</span><span>be transparent</span><span>use tools purposefully</span><span>know when not to use them</span></div>
+
+  <div class="card poll" data-poll="habit">
+    <div class="card-label"><span class="tag">Poll</span><span class="poll-meta"></span></div>
+    <fieldset>
+      <legend class="fieldset-label">Which habit will you work to make normal first?</legend>
+      <label class="opt"><span class="fill"></span><input type="radio" name="habit" value="verify"><span class="radio"></span><span class="txt">Verify</span><span class="pct"></span></label>
+      <label class="opt"><span class="fill"></span><input type="radio" name="habit" value="missing"><span class="radio"></span><span class="txt">Ask what is missing</span><span class="pct"></span></label>
+      <label class="opt"><span class="fill"></span><input type="radio" name="habit" value="protect"><span class="radio"></span><span class="txt">Protect some thinking</span><span class="pct"></span></label>
+      <label class="opt"><span class="fill"></span><input type="radio" name="habit" value="transparent"><span class="radio"></span><span class="txt">Be transparent</span><span class="pct"></span></label>
+      <label class="opt"><span class="fill"></span><input type="radio" name="habit" value="purpose"><span class="radio"></span><span class="txt">Use tools purposefully</span><span class="pct"></span></label>
+      <label class="opt"><span class="fill"></span><input type="radio" name="habit" value="whennot"><span class="radio"></span><span class="txt">Know when not to use them</span><span class="pct"></span></label>
+    </fieldset>
+  </div>
+
+  <div class="card try">
+    <div class="card-label"><span class="tag">My plan</span></div>
+    <div class="field"><label for="p-change">One small change I'll try in the next two weeks</label><textarea id="p-change" data-note="pchange"></textarea></div>
+    <div class="grid2">
+      <div class="field"><label for="p-where">In which class or assignment?</label><input type="text" id="p-where" data-note="pwhere"></div>
+      <div class="field"><label for="p-know">How I'll know it helped learning</label><input type="text" id="p-know" data-note="pknow"></div>
+    </div>
+    <div class="field"><label for="p-question">A question I'm still carrying</label><textarea id="p-question" data-note="pquestion"></textarea></div>
+    <p class="fieldset-label">Everything you wrote today</p>
+    <div class="plan" id="plan-out"></div>
+    <div class="row"><button class="btn" type="button" data-copy="plan-out">Copy my notes</button><button class="btn ghost" type="button" id="clear-btn">Clear my notes</button><span class="toast" data-toast="plan-out"></span></div>
+    <p class="hint">Paste your notes into an email to yourself or a planning doc before you close this page.</p>
+  </div>
+</section>
+
+<footer>
+  <span class="who">Theresa Merrick Cassidy</span>
+  <span>tmcassidy@ksu.edu · Kansas State University</span>
+  <ul class="sources">
+    <li>Douglas Adams, <i>The Salmon of Doubt</i> (2002).</li>
+    <li>Marc Watkins, "Our Duty of Care in the Age of AI" and "AI Is Quietly Changing Who Gets to Build Software" (2026).</li>
+    <li>OECD &amp; European Commission, AI Literacy Framework (2026); Anthropic, AI Fluency framework.</li>
+    <li>Jason Gulya, "Problems with Process Over Product" (2026).</li>
+    <li>USD 383 AI Guidelines and Board Policy IIBE.</li>
+  </ul>
+</footer>
+</div>
+
+<script>
+(function () {
+  const STORE = "usd383-s1-notes";
+  const store = {
+    load() { try { return JSON.parse(localStorage.getItem(STORE) || "{}"); } catch (e) { return {}; } },
+    save(o) { try { localStorage.setItem(STORE, JSON.stringify(o)); } catch (e) {} }
+  };
+  let notes = store.load();
+  notes.polls = notes.polls || {};
+  notes.sort = notes.sort || {};
+
+  /* ---------- notes ---------- */
+  const noteEls = document.querySelectorAll("[data-note]");
+  noteEls.forEach(el => {
+    const k = el.dataset.note;
+    if (notes[k]) el.value = notes[k];
+    el.addEventListener("input", () => { notes[k] = el.value; store.save(notes); refresh(); });
+  });
+
+  /* ---------- prompt builders ---------- */
+  const val = (id, fallback) => (document.getElementById(id).value.trim() || fallback);
+  function buildPrompts() {
+    document.getElementById("pb-out").textContent =
+      "You are " + val("pb-role", "[role]") + ". I am a student working on " + val("pb-goal", "[what the student is working on]") + ". " +
+      val("pb-bounds", "[boundaries]") + " " + val("pb-style", "[output style and tone]");
+    document.getElementById("t3-out").textContent =
+      "My students need to practice " + val("t3-skill", "________") + ". They currently struggle with " + val("t3-struggle", "________") +
+      ". Give me three ways AI could be added after students have done the important thinking themselves. Focus on comparison, critique, simulation, alternatives, or iteration. Do not replace the skill they are practicing.";
+  }
+
+  /* ---------- sorter ---------- */
+  const TASKS = [
+    ["fmt", "Reformat a handout or clean up directions"],
+    ["versions", "Create several versions of a quiz"],
+    ["email", "Draft a routine message to families that I review"],
+    ["examples", "Generate example paragraphs for students to critique"],
+    ["diff", "Adapt a reading for different reading levels"],
+    ["rubric", "Draft rubric language"],
+    ["understand", "Decide what a student understands from their work"],
+    ["grade", "Assign a high-stakes grade"],
+    ["sensitive", "Respond to sensitive student writing or behavior"]
+  ];
+  const BUCKETS = [["give", "Hand off"], ["think", "With my thinking"], ["keep", "Keep human"]];
+  const sorter = document.getElementById("sorter");
+  TASKS.forEach(([id, label]) => {
+    const row = document.createElement("div");
+    row.className = "sort-item";
+    const span = document.createElement("span"); span.textContent = label; span.id = "st-" + id;
+    const seg = document.createElement("div"); seg.className = "seg"; seg.setAttribute("role", "group"); seg.setAttribute("aria-labelledby", span.id);
+    BUCKETS.forEach(([b, bl]) => {
+      const btn = document.createElement("button");
+      btn.type = "button"; btn.textContent = bl; btn.id = "sort-" + id + "-" + b;
+      btn.setAttribute("aria-pressed", notes.sort[id] === b ? "true" : "false");
+      btn.addEventListener("click", () => {
+        notes.sort[id] = notes.sort[id] === b ? undefined : b;
+        seg.querySelectorAll("button").forEach(x => x.setAttribute("aria-pressed", "false"));
+        if (notes.sort[id]) btn.setAttribute("aria-pressed", "true");
+        store.save(notes); refresh();
+      });
+      seg.appendChild(btn);
+    });
+    row.append(span, seg); sorter.appendChild(row);
+  });
+
+  /* ---------- plan summary ---------- */
+  const POLL_Q = {};
+  document.querySelectorAll(".poll").forEach(p => { POLL_Q[p.dataset.poll] = p.querySelector("legend").textContent.trim(); });
+  function labelFor(id) { const l = document.querySelector('label[for="' + id + '"]'); return l ? l.childNodes[0].textContent.trim() : id; }
+  function buildPlan() {
+    const lines = ["Teaching in an AI World · USD 383 · Session 1", ""];
+    const add = (head, ids) => {
+      const got = ids.filter(id => document.getElementById(id).value.trim());
+      if (!got.length) return;
+      lines.push(head.toUpperCase());
+      got.forEach(id => lines.push("- " + labelFor(id) + ": " + document.getElementById(id).value.trim()));
+      lines.push("");
+    };
+    add("My plan", ["p-change", "p-where", "p-know", "p-question"]);
+    add("Opening reflections", ["n-students", "n-value"]);
+    add("Try it 1: asking AI about what I know", ["t1-topic", "t1-right", "t1-missing", "t1-over", "t1-know"]);
+    add("Dust Bowl evaluation", ["db-right", "db-missing", "db-verify", "db-know"]);
+    add("Student first, AI later", ["sf-task", "sf-first", "sf-later"]);
+    if (["pb-role","pb-goal","pb-bounds","pb-style"].some(id => document.getElementById(id).value.trim())) {
+      lines.push("STUDENT PROMPT I DRAFTED"); lines.push(document.getElementById("pb-out").textContent); lines.push("");
+    }
+    add("Assignment rules", ["r-why"]);
+    if (["t3-skill","t3-struggle"].some(id => document.getElementById(id).value.trim())) {
+      lines.push("TEACHER PROMPT"); lines.push(document.getElementById("t3-out").textContent); lines.push("");
+    }
+    add("AI suggestions", ["t3-use", "t3-reject"]);
+    const sorted = TASKS.filter(([id]) => notes.sort[id]);
+    if (sorted.length) {
+      lines.push("WHAT I'D HAND TO AI");
+      sorted.forEach(([id, l]) => lines.push("- " + l + ": " + BUCKETS.find(b => b[0] === notes.sort[id])[1]));
+      lines.push("");
+    }
+    const answered = Object.keys(notes.polls).filter(k => notes.polls[k]);
+    if (answered.length) {
+      lines.push("MY POLL ANSWERS");
+      answered.forEach(k => {
+        const inp = document.querySelector('input[name="' + k + '"][value="' + notes.polls[k] + '"]');
+        if (inp) lines.push("- " + POLL_Q[k] + " " + inp.parentElement.querySelector(".txt").textContent);
+      });
+    }
+    const out = lines.join("\n").trim();
+    document.getElementById("plan-out").textContent = out.includes("\n") ? out : "Your notes will collect here as you fill in the activities above.";
+  }
+
+  /* ---------- nav progress ---------- */
+  function markNav() {
+    document.querySelectorAll(".nav a").forEach(a => {
+      const sec = document.getElementById(a.dataset.sec);
+      const anyNote = [...sec.querySelectorAll("[data-note]")].some(el => el.value.trim());
+      const anyPoll = [...sec.querySelectorAll(".poll")].some(p => notes.polls[p.dataset.poll]);
+      const anySort = sec.contains(sorter) && Object.values(notes.sort).some(Boolean);
+      a.classList.toggle("done", anyNote || anyPoll || anySort);
+    });
+  }
+
+  function refresh() { buildPrompts(); buildPlan(); markNav(); }
+
+  /* ---------- copy buttons ---------- */
+  document.querySelectorAll("[data-copy]").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const el = document.getElementById(btn.dataset.copy);
+      const toast = document.querySelector('[data-toast="' + btn.dataset.copy + '"]');
+      const text = el.textContent;
+      const done = msg => { toast.textContent = msg; setTimeout(() => { toast.textContent = ""; }, 2500); };
+      const fallback = () => {
+        const r = document.createRange(); r.selectNodeContents(el);
+        const s = window.getSelection(); s.removeAllRanges(); s.addRange(r);
+        done("Selected. Press Ctrl+C or ⌘C to copy.");
+      };
+      try { navigator.clipboard.writeText(text).then(() => done("Copied"), fallback); } catch (e) { fallback(); }
+    });
+  });
+
+  /* ---------- clear (two-step, no confirm dialog) ---------- */
+  const clearBtn = document.getElementById("clear-btn");
+  let armed = false;
+  clearBtn.addEventListener("click", () => {
+    if (!armed) { armed = true; clearBtn.textContent = "Click again to clear"; setTimeout(() => { armed = false; clearBtn.textContent = "Clear my notes"; }, 4000); return; }
+    armed = false; clearBtn.textContent = "Clear my notes";
+    const keepPolls = notes.polls;
+    notes = { polls: keepPolls, sort: {} };
+    noteEls.forEach(el => { el.value = ""; });
+    sorter.querySelectorAll("button").forEach(b => b.setAttribute("aria-pressed", "false"));
+    store.save(notes); refresh();
+  });
+
+  /* ---------- polls ---------- */
+  const polls = [...document.querySelectorAll(".poll")];
+  let counts = null;          // {pollId: {value: n}} from everyone, or null when results aren't available
+  let liveState = "pending";  // pending | live | readonly | offline
+
+  function renderPolls() {
+    polls.forEach(p => {
+      const id = p.dataset.poll;
+      const mine = notes.polls[id];
+      p.querySelectorAll("input").forEach(i => { i.checked = i.value === mine; });
+      const meta = p.querySelector(".poll-meta");
+      const c = counts && counts[id];
+      const total = c ? Object.values(c).reduce((a, b) => a + b, 0) : 0;
+      const show = !!mine && total > 0;
+      p.classList.toggle("revealed", show);
+      p.querySelectorAll(".opt").forEach(opt => {
+        const v = opt.querySelector("input").value;
+        const pct = show ? Math.round(100 * (c[v] || 0) / total) : 0;
+        opt.querySelector(".fill").style.width = show ? pct + "%" : "0";
+        opt.querySelector(".pct").textContent = show ? pct + "%" : "";
+      });
+      if (show) meta.textContent = total + (total === 1 ? " response" : " responses");
+      else if (!mine) meta.textContent = liveState === "offline" ? "" : "Answer to see the room";
+      else if (liveState === "pending") meta.textContent = "Loading results…";
+      else if (liveState === "offline") meta.textContent = "Saved on this device";
+      else meta.textContent = "Waiting for responses";
+    });
+  }
+
+  let db = null, uid = null, writeQueue = Promise.resolve();
+  function saveVote() {
+    if (!db || !uid || liveState !== "live") return;
+    const body = {};
+    Object.keys(notes.polls).forEach(k => { if (notes.polls[k]) body[k] = notes.polls[k]; });
+    writeQueue = writeQueue.then(() => db.doc("votes/" + uid).set(body)).catch(e => {
+      if (e && e.code === "invalid_argument") { liveState = "readonly"; renderPolls(); }
+    });
+  }
+
+  polls.forEach(p => {
+    p.addEventListener("change", e => {
+      if (e.target.name !== p.dataset.poll) return;
+      notes.polls[p.dataset.poll] = e.target.value;
+      store.save(notes);
+      renderPolls(); refresh(); saveVote();
+    });
+  });
+
+  async function connect() {
+    if (!window.claude || !window.claude.use) { liveState = "offline"; renderPolls(); return; }
+    try {
+      const [d, u] = await Promise.all([claude.use("db"), claude.use("user")]);
+      db = d;
+      if (!db) { liveState = "offline"; renderPolls(); return; }
+      uid = u ? await u.id() : null;
+      const canWrite = u ? await u.can("data.write") : null;
+      liveState = (uid && canWrite !== false) ? "live" : "readonly";
+      db.collection("votes").onSnapshot(snap => {
+        const c = {};
+        snap.docs.forEach(doc => {
+          const data = doc.data() || {};
+          Object.keys(data).forEach(k => {
+            const v = data[k];
+            if (typeof v !== "string") return;
+            c[k] = c[k] || {};
+            c[k][v] = (c[k][v] || 0) + 1;
+          });
+        });
+        counts = c;
+        renderPolls();
+      }, () => { liveState = "offline"; renderPolls(); });
+      renderPolls();
+    } catch (e) { liveState = "offline"; renderPolls(); }
+  }
+
+  refresh();
+  renderPolls();
+  connect();
+})();
+</script>
