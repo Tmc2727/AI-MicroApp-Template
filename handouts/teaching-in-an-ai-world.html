@@ -14,7 +14,6 @@
   --accent-soft: #fbe6da;
   --bar: #2f5d8a;
   --bar-soft: #dfe8f2;
-  --mine: #c2410c;
   --focus: #2f5d8a;
   --display: "Bricolage Grotesque", "Avenir Next", "Segoe UI", system-ui, sans-serif;
   --body: "Literata", Georgia, "Times New Roman", serif;
@@ -23,13 +22,13 @@
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
     --paper: #10151f; --sheet: #182030; --ink: #e8ecf3; --ink-soft: #a9b3c6; --rule: #2c364a;
-    --accent: #f08a4b; --accent-soft: #3a2418; --bar: #7fa8d6; --bar-soft: #22314a; --mine: #f08a4b; --focus: #7fa8d6;
+    --accent: #f08a4b; --accent-soft: #3a2418; --bar: #7fa8d6; --bar-soft: #22314a; --focus: #7fa8d6;
     color-scheme: dark;
   }
 }
 :root[data-theme="dark"] {
   --paper: #10151f; --sheet: #182030; --ink: #e8ecf3; --ink-soft: #a9b3c6; --rule: #2c364a;
-  --accent: #f08a4b; --accent-soft: #3a2418; --bar: #7fa8d6; --bar-soft: #22314a; --mine: #f08a4b; --focus: #7fa8d6;
+  --accent: #f08a4b; --accent-soft: #3a2418; --bar: #7fa8d6; --bar-soft: #22314a; --focus: #7fa8d6;
   color-scheme: dark;
 }
 
@@ -110,23 +109,19 @@ details ul { padding-left: 20px; }
 .row { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
 .toast { font-family: var(--mono); font-size: 13px; color: var(--accent); }
 
-/* polls */
-.poll fieldset { border: 0; margin: 0; padding: 0; display: grid; gap: 8px; }
-.poll legend { padding: 0; margin-bottom: 4px; }
-.opt { position: relative; display: grid; grid-template-columns: auto 1fr auto; gap: 12px; align-items: center; border: 1px solid var(--rule); border-radius: 8px; padding: 10px 14px; cursor: pointer; overflow: hidden; background: var(--sheet); }
-.opt input { position: absolute; opacity: 0; pointer-events: none; }
-.opt .fill { position: absolute; inset: 0 auto 0 0; width: 0; background: var(--bar-soft); transition: width .5s ease; z-index: 0; }
-.opt > *:not(.fill) { position: relative; z-index: 1; }
-.opt .radio { width: 18px; height: 18px; border-radius: 50%; border: 2px solid var(--ink-soft); display: grid; place-items: center; }
-.opt input:checked ~ .radio { border-color: var(--mine); }
-.opt input:checked ~ .radio::after { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--mine); }
-.opt input:checked ~ .txt { font-weight: 600; }
-.opt input:focus-visible ~ .radio { outline: 3px solid var(--focus); outline-offset: 2px; }
-.opt .txt { font-size: 15.5px; line-height: 1.4; min-width: 0; }
-.opt .pct { font-family: var(--mono); font-size: 14px; font-variant-numeric: tabular-nums; color: var(--ink-soft); min-width: 3.5ch; text-align: right; }
-.poll.revealed .opt input:checked ~ .pct { color: var(--mine); font-weight: 500; }
+/* Mentimeter poll cards */
+.join { display: grid; gap: 4px; background: var(--sheet); border: 1px solid var(--rule); border-left: 4px solid var(--accent); border-radius: 10px; padding: 14px 18px; }
+.join .step { font-family: var(--mono); font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-soft); }
+.join .where { font-family: var(--display); font-weight: 700; font-size: 22px; line-height: 1.3; }
+.join .where a { color: var(--ink); text-decoration-color: var(--accent); text-underline-offset: 4px; }
+.menti-code { font-family: var(--mono); font-weight: 500; letter-spacing: .06em; color: var(--accent); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.poll-q { font-family: var(--display); font-weight: 600; font-size: 17px; line-height: 1.35; }
+.opts { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
+.opts li { font-size: 15.5px; line-height: 1.4; padding: 8px 12px; border: 1px solid var(--rule); border-radius: 8px; background: var(--paper); }
+.vote-line { font-family: var(--mono); font-size: 13px; color: var(--ink-soft); }
+.vote-line a { color: var(--ink); }
+.vote-line b { color: var(--accent); font-weight: 500; letter-spacing: .04em; }
 .poll-meta { font-family: var(--mono); font-size: 12.5px; color: var(--ink-soft); }
-@media (prefers-reduced-motion: reduce) { .opt .fill { transition: none; } }
 
 /* sorter */
 .sort-list { display: grid; gap: 8px; }
@@ -148,23 +143,6 @@ details ul { padding-left: 20px; }
 /* plan summary */
 .plan { white-space: pre-wrap; font-family: var(--body); font-size: 15.5px; background: var(--paper); border: 1px solid var(--rule); border-radius: 8px; padding: 14px 16px; max-height: 360px; overflow: auto; }
 
-/* presenter view (owner and editors only) */
-.presenter-bar { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
-body.presenting .masthead .sub, body.presenting .masthead .hint, body.presenting footer,
-body.presenting .part > :not(.part-head):not(.poll) { display: none; }
-body.presenting .masthead { padding-block: 24px 16px; }
-body.presenting .part:not(:has(.poll)), body.presenting .nav li:has(a[href="#try2"]), body.presenting .nav li:has(a[href="#try3"]) { display: none; }
-body.presenting section.part { padding-block: 28px 4px; }
-body.presenting .poll { padding: 24px; }
-body.presenting .poll legend { font-size: clamp(20px, 2.6vw, 28px); line-height: 1.25; }
-body.presenting .opt { padding: 14px 18px; cursor: default; }
-body.presenting .opt .txt { font-size: clamp(17px, 2vw, 21px); }
-body.presenting .opt .pct { font-size: clamp(16px, 1.9vw, 20px); color: var(--ink); }
-body.presenting .opt .radio { display: none; }
-body.presenting .opt { grid-template-columns: 1fr auto; }
-body.presenting .poll-meta { font-size: 14px; }
-body.presenting .wrap { max-width: 960px; }
-
 footer { padding-top: 48px; border-top: 1px solid var(--rule); margin-top: 48px; display: grid; gap: 8px; font-size: 15px; color: var(--ink-soft); }
 footer .who { font-family: var(--display); font-weight: 700; color: var(--ink); font-size: 18px; }
 .sources { font-size: 13.5px; }
@@ -178,11 +156,11 @@ footer .who { font-family: var(--display); font-weight: 700; color: var(--ink); 
   <h1>Normal, Revolutionary, <span class="three">or Against the Natural Order?</span></h1>
   <p class="sub">Teaching in an AI World: Literacy, Learning, and Human Judgment. Use this page alongside the talk to answer quick polls, try the activities, and leave with a plan you can use on Monday.</p>
   <p class="byline">Theresa Merrick Cassidy · Kansas State University</p>
-  <p class="hint">Your notes stay in this browser. Poll answers are anonymous and counted together with the room's.</p>
-  <div class="presenter-bar" id="presenter-bar" hidden>
-    <button class="btn" type="button" id="presenter-btn" aria-pressed="false">Presenter view</button>
-    <span class="hint" id="presenter-note">Only you and editors see this button. It shows every poll's results without voting.</span>
+  <div class="join">
+    <span class="step">Live polls during the talk</span>
+    <span class="where">Go to <a href="https://www.menti.com" target="_blank" rel="noopener">menti.com</a> and enter code <span class="menti-code" data-menti-code>shown on screen</span></span>
   </div>
+  <p class="hint">Keep Mentimeter open in another tab. The poll questions also appear below so you can think ahead and look back. Your notes on this page stay in this browser.</p>
 </header>
 
 <nav class="nav" aria-label="Handout sections">
@@ -212,14 +190,15 @@ footer .who { font-family: var(--display); font-weight: 700; color: var(--ink); 
   </blockquote>
 
   <div class="card poll" data-poll="adams">
-    <div class="card-label"><span class="tag">Poll</span><span class="poll-meta"></span></div>
-    <fieldset>
-      <legend class="fieldset-label">Right now, generative AI feels…</legend>
-      <label class="opt"><span class="fill"></span><input type="radio" name="adams" value="normal"><span class="radio"></span><span class="txt">Normal and ordinary: part of how the world works</span><span class="pct"></span></label>
-      <label class="opt"><span class="fill"></span><input type="radio" name="adams" value="revolutionary"><span class="radio"></span><span class="txt">New, exciting, revolutionary</span><span class="pct"></span></label>
-      <label class="opt"><span class="fill"></span><input type="radio" name="adams" value="against"><span class="radio"></span><span class="txt">Against the natural order of things</span><span class="pct"></span></label>
-      <label class="opt"><span class="fill"></span><input type="radio" name="adams" value="mixed"><span class="radio"></span><span class="txt">Some of each, depending on the day</span><span class="pct"></span></label>
-    </fieldset>
+    <div class="card-label"><span class="tag">Mentimeter poll</span><span class="poll-meta">Question 1 of 9</span></div>
+    <p class="poll-q">Right now, generative AI feels…</p>
+    <ul class="opts">
+      <li>Normal and ordinary: part of how the world works</li>
+      <li>New, exciting, revolutionary</li>
+      <li>Against the natural order of things</li>
+      <li>Some of each, depending on the day</li>
+    </ul>
+    <p class="vote-line">Vote at <a href="https://www.menti.com" target="_blank" rel="noopener">menti.com</a> · code <b data-menti-code>shown on screen</b></p>
   </div>
 
   <div class="card">
@@ -250,13 +229,14 @@ footer .who { font-family: var(--display); font-weight: 700; color: var(--ink); 
   </div>
 
   <div class="card poll" data-poll="care">
-    <div class="card-label"><span class="tag">Poll</span><span class="poll-meta"></span></div>
-    <fieldset>
-      <legend class="fieldset-label">For the students you teach, which needs the most attention this year?</legend>
-      <label class="opt"><span class="fill"></span><input type="radio" name="care" value="with"><span class="radio"></span><span class="txt">Thinking with AI</span><span class="pct"></span></label>
-      <label class="opt"><span class="fill"></span><input type="radio" name="care" value="without"><span class="radio"></span><span class="txt">Thinking without AI</span><span class="pct"></span></label>
-      <label class="opt"><span class="fill"></span><input type="radio" name="care" value="about"><span class="radio"></span><span class="txt">Thinking about AI</span><span class="pct"></span></label>
-    </fieldset>
+    <div class="card-label"><span class="tag">Mentimeter poll</span><span class="poll-meta">Question 2 of 9</span></div>
+    <p class="poll-q">For the students you teach, which needs the most attention this year?</p>
+    <ul class="opts">
+      <li>Thinking with AI</li>
+      <li>Thinking without AI</li>
+      <li>Thinking about AI</li>
+    </ul>
+    <p class="vote-line">Vote at <a href="https://www.menti.com" target="_blank" rel="noopener">menti.com</a> · code <b data-menti-code>shown on screen</b></p>
   </div>
 
   <div class="quad">
@@ -287,14 +267,15 @@ footer .who { font-family: var(--display); font-weight: 700; color: var(--ink); 
   <p class="lede">Everyone needs literacy. The level of fluency can vary by age, purpose, and context. Fluent output still needs evaluation: search can improve grounding, but it does not remove the need for judgment.</p>
 
   <div class="card poll" data-poll="fluency">
-    <div class="card-label"><span class="tag">Poll</span><span class="poll-meta"></span></div>
-    <fieldset>
-      <legend class="fieldset-label">Which best describes your own AI use right now?</legend>
-      <label class="opt"><span class="fill"></span><input type="radio" name="fluency" value="none"><span class="radio"></span><span class="txt">I haven't really tried it yet</span><span class="pct"></span></label>
-      <label class="opt"><span class="fill"></span><input type="radio" name="fluency" value="occasional"><span class="radio"></span><span class="txt">I've experimented a few times</span><span class="pct"></span></label>
-      <label class="opt"><span class="fill"></span><input type="radio" name="fluency" value="regular"><span class="radio"></span><span class="txt">I use it regularly for some tasks</span><span class="pct"></span></label>
-      <label class="opt"><span class="fill"></span><input type="radio" name="fluency" value="daily"><span class="radio"></span><span class="txt">It's part of my daily workflow</span><span class="pct"></span></label>
-    </fieldset>
+    <div class="card-label"><span class="tag">Mentimeter poll</span><span class="poll-meta">Question 3 of 9</span></div>
+    <p class="poll-q">Which best describes your own AI use right now?</p>
+    <ul class="opts">
+      <li>I haven't really tried it yet</li>
+      <li>I've experimented a few times</li>
+      <li>I use it regularly for some tasks</li>
+      <li>It's part of my daily workflow</li>
+    </ul>
+    <p class="vote-line">Vote at <a href="https://www.menti.com" target="_blank" rel="noopener">menti.com</a> · code <b data-menti-code>shown on screen</b></p>
   </div>
 </section>
 
@@ -321,14 +302,15 @@ footer .who { font-family: var(--display); font-weight: 700; color: var(--ink); 
   </div>
 
   <div class="card poll" data-poll="t1">
-    <div class="card-label"><span class="tag">Poll</span><span class="poll-meta"></span></div>
-    <fieldset>
-      <legend class="fieldset-label">Overall, the answer you got was…</legend>
-      <label class="opt"><span class="fill"></span><input type="radio" name="t1" value="solid"><span class="radio"></span><span class="txt">Solid. I'd stand behind most of it</span><span class="pct"></span></label>
-      <label class="opt"><span class="fill"></span><input type="radio" name="t1" value="incomplete"><span class="radio"></span><span class="txt">Accurate but incomplete</span><span class="pct"></span></label>
-      <label class="opt"><span class="fill"></span><input type="radio" name="t1" value="misleading"><span class="radio"></span><span class="txt">Plausible, but misleading in places</span><span class="pct"></span></label>
-      <label class="opt"><span class="fill"></span><input type="radio" name="t1" value="wrong"><span class="radio"></span><span class="txt">Wrong on something that matters</span><span class="pct"></span></label>
-    </fieldset>
+    <div class="card-label"><span class="tag">Mentimeter poll</span><span class="poll-meta">Question 4 of 9</span></div>
+    <p class="poll-q">Overall, the answer you got was…</p>
+    <ul class="opts">
+      <li>Solid. I'd stand behind most of it</li>
+      <li>Accurate but incomplete</li>
+      <li>Plausible, but misleading in places</li>
+      <li>Wrong on something that matters</li>
+    </ul>
+    <p class="vote-line">Vote at <a href="https://www.menti.com" target="_blank" rel="noopener">menti.com</a> · code <b data-menti-code>shown on screen</b></p>
   </div>
 </section>
 
@@ -377,14 +359,15 @@ footer .who { font-family: var(--display); font-weight: 700; color: var(--ink); 
   </div>
 
   <div class="card poll" data-poll="move">
-    <div class="card-label"><span class="tag">Poll</span><span class="poll-meta"></span></div>
-    <fieldset>
-      <legend class="fieldset-label">Which move could you add to an existing assignment soonest?</legend>
-      <label class="opt"><span class="fill"></span><input type="radio" name="move" value="evaluate"><span class="radio"></span><span class="txt">Evaluate an AI response together</span><span class="pct"></span></label>
-      <label class="opt"><span class="fill"></span><input type="radio" name="move" value="before"><span class="radio"></span><span class="txt">Student thinking first, then compare with AI</span><span class="pct"></span></label>
-      <label class="opt"><span class="fill"></span><input type="radio" name="move" value="askai"><span class="radio"></span><span class="txt">Add an "Ask AI" step to research</span><span class="pct"></span></label>
-      <label class="opt"><span class="fill"></span><input type="radio" name="move" value="reflect"><span class="radio"></span><span class="txt">One short reflection on a writing task</span><span class="pct"></span></label>
-    </fieldset>
+    <div class="card-label"><span class="tag">Mentimeter poll</span><span class="poll-meta">Question 5 of 9</span></div>
+    <p class="poll-q">Which move could you add to an existing assignment soonest?</p>
+    <ul class="opts">
+      <li>Evaluate an AI response together</li>
+      <li>Student thinking first, then compare with AI</li>
+      <li>Add an "Ask AI" step to research</li>
+      <li>One short reflection on a writing task</li>
+    </ul>
+    <p class="vote-line">Vote at <a href="https://www.menti.com" target="_blank" rel="noopener">menti.com</a> · code <b data-menti-code>shown on screen</b></p>
   </div>
 </section>
 
@@ -421,14 +404,15 @@ footer .who { font-family: var(--display); font-weight: 700; color: var(--ink); 
   </div>
 
   <div class="card poll" data-poll="rules">
-    <div class="card-label"><span class="tag">Poll</span><span class="poll-meta"></span></div>
-    <fieldset>
-      <legend class="fieldset-label">Think of your next major assignment. Which level fits it best?</legend>
-      <label class="opt"><span class="fill"></span><input type="radio" name="rules" value="no"><span class="radio"></span><span class="txt">No AI</span><span class="pct"></span></label>
-      <label class="opt"><span class="fill"></span><input type="radio" name="rules" value="after"><span class="radio"></span><span class="txt">After human attempt</span><span class="pct"></span></label>
-      <label class="opt"><span class="fill"></span><input type="radio" name="rules" value="allowed"><span class="radio"></span><span class="txt">AI allowed</span><span class="pct"></span></label>
-      <label class="opt"><span class="fill"></span><input type="radio" name="rules" value="task"><span class="radio"></span><span class="txt">AI is the task</span><span class="pct"></span></label>
-    </fieldset>
+    <div class="card-label"><span class="tag">Mentimeter poll</span><span class="poll-meta">Question 6 of 9</span></div>
+    <p class="poll-q">Think of your next major assignment. Which level fits it best?</p>
+    <ul class="opts">
+      <li>No AI</li>
+      <li>After human attempt</li>
+      <li>AI allowed</li>
+      <li>AI is the task</li>
+    </ul>
+    <p class="vote-line">Vote at <a href="https://www.menti.com" target="_blank" rel="noopener">menti.com</a> · code <b data-menti-code>shown on screen</b></p>
   </div>
 
   <div class="card">
@@ -448,14 +432,15 @@ footer .who { font-family: var(--display); font-weight: 700; color: var(--ink); 
   <p class="lede">AI is being built directly into planning, materials, differentiation, feedback, and repeated tasks. A product menu is not a pedagogical argument. Testing a tool is not the same as adopting it.</p>
 
   <div class="card poll" data-poll="expect">
-    <div class="card-label"><span class="tag">Poll</span><span class="poll-meta"></span></div>
-    <fieldset>
-      <legend class="fieldset-label">If you were the student: what would you most expect from a teacher who uses AI in your class?</legend>
-      <label class="opt"><span class="fill"></span><input type="radio" name="expect" value="engage"><span class="radio"></span><span class="txt">That they actually engage with my work</span><span class="pct"></span></label>
-      <label class="opt"><span class="fill"></span><input type="radio" name="expect" value="human"><span class="radio"></span><span class="txt">That a person makes the consequential judgments</span><span class="pct"></span></label>
-      <label class="opt"><span class="fill"></span><input type="radio" name="expect" value="transparent"><span class="radio"></span><span class="txt">That they tell me when AI shaped my feedback or grade</span><span class="pct"></span></label>
-      <label class="opt"><span class="fill"></span><input type="radio" name="expect" value="same"><span class="radio"></span><span class="txt">That they follow the same rules they set for me</span><span class="pct"></span></label>
-    </fieldset>
+    <div class="card-label"><span class="tag">Mentimeter poll</span><span class="poll-meta">Question 7 of 9</span></div>
+    <p class="poll-q">If you were the student: what would you most expect from a teacher who uses AI in your class?</p>
+    <ul class="opts">
+      <li>That they actually engage with my work</li>
+      <li>That a person makes the consequential judgments</li>
+      <li>That they tell me when AI shaped my feedback or grade</li>
+      <li>That they follow the same rules they set for me</li>
+    </ul>
+    <p class="vote-line">Vote at <a href="https://www.menti.com" target="_blank" rel="noopener">menti.com</a> · code <b data-menti-code>shown on screen</b></p>
   </div>
 
   <div class="card">
@@ -466,14 +451,15 @@ footer .who { font-family: var(--display); font-weight: 700; color: var(--ink); 
   </div>
 
   <div class="card poll" data-poll="feedback">
-    <div class="card-label"><span class="tag">Poll</span><span class="poll-meta"></span></div>
-    <fieldset>
-      <legend class="fieldset-label">AI drafts written feedback on student essays, and the teacher reviews it before returning it. Your view?</legend>
-      <label class="opt"><span class="fill"></span><input type="radio" name="feedback" value="fine"><span class="radio"></span><span class="txt">Fine as is: it saves time for other teaching</span><span class="pct"></span></label>
-      <label class="opt"><span class="fill"></span><input type="radio" name="feedback" value="disclose"><span class="radio"></span><span class="txt">Fine, if students are told</span><span class="pct"></span></label>
-      <label class="opt"><span class="fill"></span><input type="radio" name="feedback" value="lowstakes"><span class="radio"></span><span class="txt">Only for low-stakes drafts</span><span class="pct"></span></label>
-      <label class="opt"><span class="fill"></span><input type="radio" name="feedback" value="no"><span class="radio"></span><span class="txt">Not something I'd delegate</span><span class="pct"></span></label>
-    </fieldset>
+    <div class="card-label"><span class="tag">Mentimeter poll</span><span class="poll-meta">Question 8 of 9</span></div>
+    <p class="poll-q">AI drafts written feedback on student essays, and the teacher reviews it before returning it. Your view?</p>
+    <ul class="opts">
+      <li>Fine as is: it saves time for other teaching</li>
+      <li>Fine, if students are told</li>
+      <li>Only for low-stakes drafts</li>
+      <li>Not something I'd delegate</li>
+    </ul>
+    <p class="vote-line">Vote at <a href="https://www.menti.com" target="_blank" rel="noopener">menti.com</a> · code <b data-menti-code>shown on screen</b></p>
   </div>
 
   <div class="trio">
@@ -516,16 +502,17 @@ footer .who { font-family: var(--display); font-weight: 700; color: var(--ink); 
   <div class="habits"><span>verify</span><span>ask what is missing</span><span>protect some thinking</span><span>be transparent</span><span>use tools purposefully</span><span>know when not to use them</span></div>
 
   <div class="card poll" data-poll="habit">
-    <div class="card-label"><span class="tag">Poll</span><span class="poll-meta"></span></div>
-    <fieldset>
-      <legend class="fieldset-label">Which habit will you work to make normal first?</legend>
-      <label class="opt"><span class="fill"></span><input type="radio" name="habit" value="verify"><span class="radio"></span><span class="txt">Verify</span><span class="pct"></span></label>
-      <label class="opt"><span class="fill"></span><input type="radio" name="habit" value="missing"><span class="radio"></span><span class="txt">Ask what is missing</span><span class="pct"></span></label>
-      <label class="opt"><span class="fill"></span><input type="radio" name="habit" value="protect"><span class="radio"></span><span class="txt">Protect some thinking</span><span class="pct"></span></label>
-      <label class="opt"><span class="fill"></span><input type="radio" name="habit" value="transparent"><span class="radio"></span><span class="txt">Be transparent</span><span class="pct"></span></label>
-      <label class="opt"><span class="fill"></span><input type="radio" name="habit" value="purpose"><span class="radio"></span><span class="txt">Use tools purposefully</span><span class="pct"></span></label>
-      <label class="opt"><span class="fill"></span><input type="radio" name="habit" value="whennot"><span class="radio"></span><span class="txt">Know when not to use them</span><span class="pct"></span></label>
-    </fieldset>
+    <div class="card-label"><span class="tag">Mentimeter poll</span><span class="poll-meta">Question 9 of 9</span></div>
+    <p class="poll-q">Which habit will you work to make normal first?</p>
+    <ul class="opts">
+      <li>Verify</li>
+      <li>Ask what is missing</li>
+      <li>Protect some thinking</li>
+      <li>Be transparent</li>
+      <li>Use tools purposefully</li>
+      <li>Know when not to use them</li>
+    </ul>
+    <p class="vote-line">Vote at <a href="https://www.menti.com" target="_blank" rel="noopener">menti.com</a> · code <b data-menti-code>shown on screen</b></p>
   </div>
 
   <div class="card try">
@@ -564,7 +551,6 @@ footer .who { font-family: var(--display); font-weight: 700; color: var(--ink); 
     save(o) { try { localStorage.setItem(STORE, JSON.stringify(o)); } catch (e) {} }
   };
   let notes = store.load();
-  notes.polls = notes.polls || {};
   notes.sort = notes.sort || {};
 
   /* ---------- notes ---------- */
@@ -621,8 +607,6 @@ footer .who { font-family: var(--display); font-weight: 700; color: var(--ink); 
   });
 
   /* ---------- plan summary ---------- */
-  const POLL_Q = {};
-  document.querySelectorAll(".poll").forEach(p => { POLL_Q[p.dataset.poll] = p.querySelector("legend").textContent.trim(); });
   function labelFor(id) { const l = document.querySelector('label[for="' + id + '"]'); return l ? l.childNodes[0].textContent.trim() : id; }
   function buildPlan() {
     const lines = ["Teaching in an AI World · USD 383 · Session 1", ""];
@@ -652,14 +636,6 @@ footer .who { font-family: var(--display); font-weight: 700; color: var(--ink); 
       sorted.forEach(([id, l]) => lines.push("- " + l + ": " + BUCKETS.find(b => b[0] === notes.sort[id])[1]));
       lines.push("");
     }
-    const answered = Object.keys(notes.polls).filter(k => notes.polls[k]);
-    if (answered.length) {
-      lines.push("MY POLL ANSWERS");
-      answered.forEach(k => {
-        const inp = document.querySelector('input[name="' + k + '"][value="' + notes.polls[k] + '"]');
-        if (inp) lines.push("- " + POLL_Q[k] + " " + inp.parentElement.querySelector(".txt").textContent);
-      });
-    }
     const out = lines.join("\n").trim();
     document.getElementById("plan-out").textContent = out.includes("\n") ? out : "Your notes will collect here as you fill in the activities above.";
   }
@@ -669,9 +645,8 @@ footer .who { font-family: var(--display); font-weight: 700; color: var(--ink); 
     document.querySelectorAll(".nav a").forEach(a => {
       const sec = document.getElementById(a.dataset.sec);
       const anyNote = [...sec.querySelectorAll("[data-note]")].some(el => el.value.trim());
-      const anyPoll = [...sec.querySelectorAll(".poll")].some(p => notes.polls[p.dataset.poll]);
       const anySort = sec.contains(sorter) && Object.values(notes.sort).some(Boolean);
-      a.classList.toggle("done", anyNote || anyPoll || anySort);
+      a.classList.toggle("done", anyNote || anySort);
     });
   }
 
@@ -699,110 +674,16 @@ footer .who { font-family: var(--display); font-weight: 700; color: var(--ink); 
   clearBtn.addEventListener("click", () => {
     if (!armed) { armed = true; clearBtn.textContent = "Click again to clear"; setTimeout(() => { armed = false; clearBtn.textContent = "Clear my notes"; }, 4000); return; }
     armed = false; clearBtn.textContent = "Clear my notes";
-    const keepPolls = notes.polls;
-    notes = { polls: keepPolls, sort: {} };
+    notes = { sort: {} };
     noteEls.forEach(el => { el.value = ""; });
     sorter.querySelectorAll("button").forEach(b => b.setAttribute("aria-pressed", "false"));
     store.save(notes); refresh();
   });
 
-  /* ---------- polls ---------- */
-  const polls = [...document.querySelectorAll(".poll")];
-  let presenting = false;
-  let counts = null;          // {pollId: {value: n}} from everyone, or null when results aren't available
-  let liveState = "pending";  // pending | live | readonly | offline
-
-  function renderPolls() {
-    polls.forEach(p => {
-      const id = p.dataset.poll;
-      const mine = notes.polls[id];
-      p.querySelectorAll("input").forEach(i => { i.checked = !presenting && i.value === mine; i.disabled = presenting; });
-      const meta = p.querySelector(".poll-meta");
-      const c = counts && counts[id];
-      const total = c ? Object.values(c).reduce((a, b) => a + b, 0) : 0;
-      const show = (presenting || !!mine) && total > 0;
-      p.classList.toggle("revealed", show);
-      p.querySelectorAll(".opt").forEach(opt => {
-        const v = opt.querySelector("input").value;
-        const pct = show ? Math.round(100 * (c[v] || 0) / total) : 0;
-        opt.querySelector(".fill").style.width = show ? pct + "%" : "0";
-        opt.querySelector(".pct").textContent = show ? pct + "%" : "";
-      });
-      if (show) meta.textContent = total + (total === 1 ? " response" : " responses");
-      else if (presenting) meta.textContent = liveState === "pending" ? "Loading results…" : "No responses yet";
-      else if (!mine) meta.textContent = liveState === "offline" ? "" : "Answer to see the room";
-      else if (liveState === "pending") meta.textContent = "Loading results…";
-      else if (liveState === "offline") meta.textContent = "Saved on this device";
-      else meta.textContent = "Waiting for responses";
-    });
-  }
-
-  let db = null, uid = null, writeQueue = Promise.resolve();
-  function saveVote() {
-    if (!db || !uid || liveState !== "live") return;
-    const body = {};
-    Object.keys(notes.polls).forEach(k => { if (notes.polls[k]) body[k] = notes.polls[k]; });
-    writeQueue = writeQueue.then(() => db.doc("votes/" + uid).set(body)).catch(e => {
-      if (e && e.code === "invalid_argument") { liveState = "readonly"; renderPolls(); }
-    });
-  }
-
-  polls.forEach(p => {
-    p.addEventListener("change", e => {
-      if (e.target.name !== p.dataset.poll) return;
-      notes.polls[p.dataset.poll] = e.target.value;
-      store.save(notes);
-      renderPolls(); refresh(); saveVote();
-    });
-  });
-
-  async function connect() {
-    if (!window.claude || !window.claude.use) { liveState = "offline"; renderPolls(); return; }
-    try {
-      const [d, u] = await Promise.all([claude.use("db"), claude.use("user")]);
-      db = d;
-      if (!db) { liveState = "offline"; renderPolls(); return; }
-      uid = u ? await u.id() : null;
-      if (u && ((await u.isOwner()) || (await u.canEdit()))) setupPresenter();
-      const canWrite = u ? await u.can("data.write") : null;
-      liveState = (uid && canWrite !== false) ? "live" : "readonly";
-      db.collection("votes").onSnapshot(snap => {
-        const c = {};
-        snap.docs.forEach(doc => {
-          const data = doc.data() || {};
-          Object.keys(data).forEach(k => {
-            const v = data[k];
-            if (typeof v !== "string") return;
-            c[k] = c[k] || {};
-            c[k][v] = (c[k][v] || 0) + 1;
-          });
-        });
-        counts = c;
-        renderPolls();
-      }, () => { liveState = "offline"; renderPolls(); });
-      renderPolls();
-    } catch (e) { liveState = "offline"; renderPolls(); }
-  }
-
-  function setupPresenter() {
-    const bar = document.getElementById("presenter-bar");
-    const btn = document.getElementById("presenter-btn");
-    const note = document.getElementById("presenter-note");
-    bar.hidden = false;
-    const apply = on => {
-      presenting = on;
-      document.body.classList.toggle("presenting", on);
-      btn.setAttribute("aria-pressed", on ? "true" : "false");
-      btn.textContent = on ? "Exit presenter view" : "Presenter view";
-      note.textContent = on ? "Live results from everyone who has voted. Updates as votes arrive." : "Only you and editors see this button. It shows every poll's results without voting.";
-      renderPolls();
-    };
-    btn.addEventListener("click", () => apply(!presenting));
-    if (location.hash === "#presenter") apply(true);
-  }
+  /* ---------- Mentimeter code: set it once here ---------- */
+  const MENTI_CODE = "";
+  if (MENTI_CODE) document.querySelectorAll("[data-menti-code]").forEach(el => { el.textContent = MENTI_CODE; });
 
   refresh();
-  renderPolls();
-  connect();
 })();
 </script>
