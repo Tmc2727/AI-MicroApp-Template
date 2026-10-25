@@ -1,0 +1,976 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Storytelling in Scientific Writing</title>
+<meta name="description" content="Participant workbook: Strategies for Clarity, Impact, and Engagement. Fill it in online; your answers save automatically in your browser.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #f8f7f3;
+  --surface: #ffffff;
+  --ink: #1d2721;
+  --muted: #56625b;
+  --accent: #3b6a50;
+  --accent-ink: #ffffff;
+  --accent-soft: #dfeae1;
+  --line: #d6dcd6;
+  --field-bg: #ffffff;
+  --field-line: #b9c3bc;
+  --quote-bg: #f1f4ef;
+  --warn-bg: #fff4dc;
+  --warn-ink: #5c4300;
+  --focus: #1f6feb;
+  --serif: "EB Garamond", Garamond, Georgia, "Times New Roman", serif;
+  --sans: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #131715;
+    --surface: #1b201d;
+    --ink: #e6ebe7;
+    --muted: #a2aea6;
+    --accent: #8cc4a3;
+    --accent-ink: #10221a;
+    --accent-soft: #233229;
+    --line: #313a35;
+    --field-bg: #161a18;
+    --field-line: #46524b;
+    --quote-bg: #1f2622;
+    --warn-bg: #3a2f12;
+    --warn-ink: #f3dfa6;
+    --focus: #7ab4ff;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #131715;
+  --surface: #1b201d;
+  --ink: #e6ebe7;
+  --muted: #a2aea6;
+  --accent: #8cc4a3;
+  --accent-ink: #10221a;
+  --accent-soft: #233229;
+  --line: #313a35;
+  --field-bg: #161a18;
+  --field-line: #46524b;
+  --quote-bg: #1f2622;
+  --warn-bg: #3a2f12;
+  --warn-ink: #f3dfa6;
+  --focus: #7ab4ff;
+}
+
+* { box-sizing: border-box; }
+html { scroll-padding-top: 72px; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: 17px;
+  line-height: 1.6;
+  -webkit-text-size-adjust: 100%;
+}
+a { color: var(--accent); }
+:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
+
+.skip { position: absolute; left: -999px; top: 8px; background: var(--surface); padding: 8px 12px; z-index: 50; }
+.skip:focus { left: 8px; }
+
+/* Top bar */
+.topbar {
+  position: sticky; top: 0; z-index: 20;
+  background: color-mix(in srgb, var(--surface) 92%, transparent);
+  backdrop-filter: blur(6px);
+  border-bottom: 1px solid var(--line);
+}
+.topbar-inner {
+  max-width: 1180px; margin: 0 auto; padding: 10px 16px;
+  display: flex; align-items: center; gap: 12px;
+}
+.topbar-title { font-family: var(--serif); font-size: 1.15rem; font-weight: 600; flex: 1; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.status { font-size: .85rem; color: var(--muted); display: flex; align-items: center; gap: 6px; white-space: nowrap; }
+.status .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); flex: none; }
+.status.warn { color: var(--warn-ink); background: var(--warn-bg); padding: 2px 8px; border-radius: 6px; white-space: normal; }
+.status.warn .dot { background: #c98a00; }
+
+.menu { position: relative; }
+.menu > summary {
+  list-style: none; cursor: pointer;
+  background: var(--accent); color: var(--accent-ink);
+  border-radius: 8px; padding: 7px 14px; font-size: .9rem; font-weight: 600;
+  user-select: none;
+}
+.menu > summary::-webkit-details-marker { display: none; }
+.menu-panel {
+  position: absolute; right: 0; top: calc(100% + 8px); width: min(320px, calc(100vw - 32px));
+  background: var(--surface); border: 1px solid var(--line); border-radius: 10px;
+  box-shadow: 0 10px 30px rgba(0,0,0,.15); padding: 8px;
+}
+.menu-panel button, .menu-panel label.btnlike {
+  display: block; width: 100%; text-align: left;
+  background: none; border: 0; border-radius: 6px; padding: 9px 10px;
+  font: inherit; font-size: .95rem; color: var(--ink); cursor: pointer;
+}
+.menu-panel button:hover, .menu-panel label.btnlike:hover { background: var(--accent-soft); }
+.menu-panel small { display: block; color: var(--muted); font-size: .8rem; line-height: 1.35; }
+.menu-panel hr { border: 0; border-top: 1px solid var(--line); margin: 6px 0; }
+.menu-panel .danger { color: #b3261e; }
+:root[data-theme="dark"] .menu-panel .danger { color: #ff8a80; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .menu-panel .danger { color: #ff8a80; } }
+
+/* Layout */
+.layout { max-width: 1180px; margin: 0 auto; padding: 0 16px; display: grid; grid-template-columns: 240px minmax(0, 1fr); gap: 40px; }
+.toc { position: sticky; top: 72px; align-self: start; max-height: calc(100vh - 88px); overflow: auto; padding: 28px 0 24px; }
+.toc h2 { font-size: .75rem; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin: 0 0 8px; font-family: var(--sans); }
+.toc ol { list-style: none; margin: 0; padding: 0; }
+.toc a {
+  display: flex; gap: 8px; align-items: baseline; justify-content: space-between;
+  padding: 6px 8px; border-radius: 6px; text-decoration: none; color: var(--ink); font-size: .9rem; line-height: 1.3;
+}
+.toc a:hover { background: var(--accent-soft); }
+.toc a.active { background: var(--accent-soft); font-weight: 600; }
+.toc .count { font-size: .75rem; color: var(--muted); white-space: nowrap; font-variant-numeric: tabular-nums; }
+.toc .count.done { color: var(--accent); font-weight: 600; }
+.mobile-toc { display: none; }
+
+main { padding: 28px 0 80px; max-width: 760px; }
+
+/* Header */
+.hero { padding: 24px 0 8px; border-bottom: 3px solid var(--accent); margin-bottom: 24px; }
+.eyebrow { font-size: .78rem; letter-spacing: .12em; text-transform: uppercase; color: var(--accent); font-weight: 600; margin: 0 0 6px; }
+h1 { font-family: var(--serif); font-weight: 500; font-size: clamp(2.1rem, 6vw, 3.1rem); line-height: 1.08; margin: 0 0 8px; }
+.subtitle { font-family: var(--serif); font-style: italic; font-size: 1.3rem; color: var(--muted); margin: 0 0 12px; }
+
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 18px 20px; margin: 20px 0; }
+.card h2 { margin-top: 0; }
+.savecard { border-left: 4px solid var(--accent); }
+.savecard ul { margin: 8px 0 0; padding-left: 20px; }
+.savecard li { margin: 4px 0; }
+
+section.wb { padding-top: 12px; margin-top: 36px; border-top: 1px solid var(--line); }
+h2 { font-family: var(--serif); font-weight: 600; font-size: 1.85rem; line-height: 1.2; margin: 16px 0 10px; color: var(--ink); }
+h2 .num { color: var(--accent); margin-right: .35em; }
+h3 { font-family: var(--serif); font-weight: 600; font-size: 1.35rem; margin: 30px 0 6px; color: var(--accent); }
+p { margin: 10px 0; }
+
+/* Prompts & answers */
+.q { margin: 22px 0; }
+.q > label, .q > .label { display: block; font-weight: 650; margin-bottom: 6px; line-height: 1.45; }
+.q .tag { font-weight: 750; letter-spacing: .04em; color: var(--accent); }
+textarea {
+  display: block; width: 100%;
+  min-height: 7.5em;
+  resize: vertical;
+  font: inherit; font-size: 1rem; line-height: 1.55; color: var(--ink);
+  background: var(--field-bg);
+  border: 1px solid var(--field-line); border-radius: 8px;
+  padding: 10px 12px;
+  field-sizing: content;
+}
+textarea.short { min-height: 4.2em; }
+textarea.long { min-height: 14em; }
+textarea:focus { border-color: var(--accent); outline: 2px solid color-mix(in srgb, var(--accent) 35%, transparent); outline-offset: 0; }
+.wordcount { font-size: .85rem; color: var(--muted); margin-top: 4px; text-align: right; font-variant-numeric: tabular-nums; }
+.wordcount.ok { color: var(--accent); font-weight: 600; }
+.print-answer { display: none; }
+
+/* Look-back panels */
+.lookback { margin: 8px 0 12px; border: 1px dashed var(--field-line); border-radius: 8px; background: var(--quote-bg); }
+.lookback > summary { cursor: pointer; padding: 8px 12px; font-size: .92rem; font-weight: 600; color: var(--accent); }
+.lookback-body { padding: 0 12px 12px; }
+.lb-item { border-top: 1px solid var(--line); padding: 10px 0 4px; }
+.lb-item:first-child { border-top: 0; }
+.lb-label { font-size: .8rem; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); font-weight: 600; }
+.lb-text { white-space: pre-wrap; margin: 4px 0 6px; font-size: .95rem; }
+.lb-empty { font-style: italic; color: var(--muted); font-size: .92rem; margin: 4px 0 6px; }
+.lb-copy {
+  font: inherit; font-size: .82rem; font-weight: 600; cursor: pointer;
+  background: var(--surface); color: var(--accent); border: 1px solid var(--accent); border-radius: 6px; padding: 3px 10px;
+}
+.lb-copy:hover { background: var(--accent-soft); }
+
+/* Source passages */
+blockquote, .passage {
+  margin: 14px 0; padding: 14px 18px;
+  background: var(--quote-bg); border-left: 4px solid var(--accent); border-radius: 0 8px 8px 0;
+  font-family: var(--serif); font-size: 1.15rem; line-height: 1.55;
+}
+blockquote.italic { font-style: italic; }
+.passage p { margin: 0 0 12px; }
+.passage p:last-child { margin-bottom: 0; }
+.passage .mk { font-family: var(--sans); font-size: .8rem; font-weight: 700; color: var(--accent); background: var(--accent-soft); border-radius: 4px; padding: 0 4px; margin-right: 3px; white-space: nowrap; }
+.passage .eq { text-align: center; }
+.ellipsis { font-family: var(--serif); font-size: 1.4rem; text-align: center; margin: 4px 0; }
+.source { font-size: .85rem; color: var(--muted); line-height: 1.45; }
+.note { font-size: .95rem; color: var(--muted); font-style: italic; }
+
+table { width: 100%; border-collapse: collapse; margin: 14px 0; font-size: .97rem; background: var(--surface); }
+th, td { text-align: left; vertical-align: top; padding: 10px 12px; border: 1px solid var(--line); }
+th { background: var(--accent-soft); font-weight: 650; }
+td:first-child { font-weight: 600; width: 38%; }
+
+.example { margin: 10px 0; }
+.example div { margin: 4px 0; }
+.example b { color: var(--accent); }
+
+.checks { list-style: none; padding: 0; margin: 10px 0; }
+.checks li { margin: 8px 0; }
+.checks label { display: flex; gap: 10px; align-items: flex-start; cursor: pointer; }
+.checks input { width: 1.2em; height: 1.2em; margin-top: .25em; accent-color: var(--accent); flex: none; }
+
+.end { text-align: center; color: var(--muted); font-size: .9rem; margin-top: 48px; }
+.btn {
+  font: inherit; font-weight: 600; font-size: .95rem; cursor: pointer;
+  background: var(--accent); color: var(--accent-ink); border: 0; border-radius: 8px; padding: 9px 16px; margin: 4px 6px 4px 0;
+}
+.btn.secondary { background: var(--surface); color: var(--accent); border: 1px solid var(--accent); }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+@media (max-width: 900px) {
+  .layout { grid-template-columns: minmax(0, 1fr); gap: 0; }
+  .toc { display: none; }
+  .mobile-toc { display: block; margin: 16px 0 0; }
+  .mobile-toc > summary { cursor: pointer; font-weight: 600; padding: 8px 12px; background: var(--surface); border: 1px solid var(--line); border-radius: 8px; }
+  .mobile-toc ol { margin: 8px 0 0; padding-left: 22px; }
+  .mobile-toc li { margin: 4px 0; }
+  main { padding-top: 8px; }
+}
+@media (max-width: 560px) {
+  body { font-size: 16px; }
+  .topbar-title { font-size: 1rem; }
+  .status .txt-long { display: none; }
+  h2 { font-size: 1.55rem; }
+  blockquote, .passage { font-size: 1.05rem; padding: 12px 14px; }
+  td:first-child { width: auto; }
+}
+
+/* Print: show answers as text, hide controls */
+@page { margin: 18mm 16mm; }
+@media print {
+  :root { --bg: #fff; --surface: #fff; --ink: #000; --muted: #333; --quote-bg: #f3f3f3; }
+  body { font-size: 11pt; background: #fff; }
+  .topbar, .toc, .mobile-toc, .lookback, .no-print, .wordcount { display: none !important; }
+  .layout { display: block; padding: 0; }
+  main { max-width: none; padding: 0; }
+  textarea { display: none !important; }
+  .print-answer { display: block; white-space: pre-wrap; border: 1px solid #999; border-radius: 4px; padding: 6px 8px; min-height: 2.4em; font-size: 10.5pt; }
+  .print-answer.empty { color: #777; font-style: italic; }
+  section.wb { break-before: auto; }
+  .q, blockquote, .passage, table { break-inside: avoid; }
+  a { color: #000; text-decoration: none; }
+}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to the workbook</a>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <div class="topbar-title">Storytelling in Scientific Writing</div>
+    <div class="status" id="status" title="">
+      <span class="dot" aria-hidden="true"></span><span id="status-text">Loading…</span>
+    </div>
+    <details class="menu" id="menu">
+      <summary>Save a copy</summary>
+      <div class="menu-panel" role="group" aria-label="Save and export options">
+        <button type="button" data-action="print">Print or save as PDF
+          <small>A clean copy of the workbook with your answers.</small></button>
+        <button type="button" data-action="txt">Download as a text file (.txt)
+          <small>Opens in any word processor, Google Docs, or notes app.</small></button>
+        <hr>
+        <button type="button" data-action="backup">Download a backup file
+          <small>Use it to continue on another computer or browser.</small></button>
+        <label class="btnlike" for="restore-input">Open a backup file…
+          <small>Loads answers you saved earlier.</small></label>
+        <hr>
+        <button type="button" data-action="clear" class="danger">Clear all my answers
+          <small>For shared or public computers.</small></button>
+      </div>
+    </details>
+    <input type="file" id="restore-input" accept=".json,application/json" class="sr-only" tabindex="-1">
+  </div>
+</header>
+
+<div class="layout">
+  <nav class="toc" aria-label="Workbook sections">
+    <h2>Workbook</h2>
+    <ol id="toc-list"></ol>
+  </nav>
+
+  <main id="main">
+    <div class="hero">
+      <p class="eyebrow">Participant workbook</p>
+      <h1>Storytelling in Scientific Writing</h1>
+      <p class="subtitle">Strategies for Clarity, Impact, and Engagement</p>
+    </div>
+
+    <details class="mobile-toc">
+      <summary>Jump to a section</summary>
+      <ol id="toc-list-mobile"></ol>
+    </details>
+
+    <div class="card savecard no-print" id="about-saving">
+      <h2 style="font-size:1.25rem;margin-bottom:4px">How your work is saved</h2>
+      <ul>
+        <li>Your answers <strong>save automatically</strong> in this browser as you type. Close the page and come back on the same device and browser, and they will still be here.</li>
+        <li>Nothing is sent anywhere: your writing stays on your device. No account or login is needed.</li>
+        <li>Later activities include <strong>“Look back”</strong> panels that show what you wrote earlier, so you can build on it.</li>
+        <li>To keep a permanent copy, or to move to another computer, use <strong>Save a copy</strong> at the top of the page. Private or incognito windows do not keep your answers after you close them.</li>
+      </ul>
+    </div>
+
+    <section class="wb" id="how-to" data-title="How to use this workbook">
+      <h2>How to use this workbook</h2>
+      <p>Choose one research project, experiment, or question that you know well, whether it is finished, ongoing, or still developing. You are welcome to pull up existing writing if you have it on your device; otherwise, work fresh with what you have! The activities will build on the same example, with the goal that you will have a working story for your research by the end of the workshop.</p>
+    </section>
+
+    <!-- 1 -->
+    <section class="wb" id="s1" data-title="Find the story in your research" data-num="1">
+      <h2><span class="num">1.</span>Find the story in your research</h2>
+      <p>Choose one project to focus on and write two or three sentences for each prompt.</p>
+
+      <div class="q">
+        <label for="s1-opening"><span class="tag">OPENING</span> — What larger scientific problem or issue does your work contribute to?</label>
+        <textarea id="s1-opening" data-field data-short="Section 1 · Opening"></textarea>
+      </div>
+      <div class="q">
+        <label for="s1-challenge"><span class="tag">CHALLENGE</span> — What specific question, uncertainty, or hypothesis drives the work?</label>
+        <textarea id="s1-challenge" data-field data-short="Section 1 · Challenge"></textarea>
+      </div>
+      <div class="q">
+        <label for="s1-action"><span class="tag">ACTION</span> — What are your two or three most important findings? If ongoing, what evidence are you gathering?</label>
+        <textarea id="s1-action" data-field data-short="Section 1 · Action"></textarea>
+      </div>
+      <div class="q">
+        <label for="s1-resolution"><span class="tag">RESOLUTION</span> — What do the findings help us understand? If ongoing, what understanding could the evidence produce?</label>
+        <textarea id="s1-resolution" data-field data-short="Section 1 · Resolution"></textarea>
+      </div>
+      <div class="q">
+        <label for="s1-partner">Partner check: Can your reader explain your specific research question and why it matters? What needs clarifying?</label>
+        <textarea id="s1-partner" data-field class="short" data-short="Section 1 · Partner check"></textarea>
+      </div>
+    </section>
+
+    <!-- 2 -->
+    <section class="wb" id="s2" data-title="Map the story with OCAR" data-num="2">
+      <h2><span class="num">2.</span>Map the story with OCAR</h2>
+      <p>Opening → Challenge → Action → Resolution. The four functions may appear across conventional Introduction, Methods, Results, and Discussion sections; they are not mandatory section headings.</p>
+      <table>
+        <thead><tr><th scope="col">Element</th><th scope="col">Function in the story</th></tr></thead>
+        <tbody>
+          <tr><td>Opening</td><td>Introduce the scientific subject and the larger problem</td></tr>
+          <tr><td>Challenge</td><td>Identify the specific question or uncertainty</td></tr>
+          <tr><td>Action</td><td>Describe how the work addresses that question and what evidence emerges</td></tr>
+          <tr><td>Resolution</td><td>Explain how understanding has changed and return to the larger problem</td></tr>
+        </tbody>
+      </table>
+
+      <h3>The hourglass check</h3>
+      <p>A paper commonly begins broadly, narrows to the research question and evidence, then expands back to its significance. The resolution should connect with the opening—not simply repeat a result.</p>
+
+      <details class="lookback" data-from="s1-opening s1-challenge s1-action s1-resolution">
+        <summary>Look back: your OCAR answers from Section 1</summary>
+      </details>
+
+      <div class="q">
+        <label for="s2-lead">Does your larger opening problem actually lead to your specific question?</label>
+        <textarea id="s2-lead" data-field data-short="Section 2 · Opening leads to question?"></textarea>
+      </div>
+      <div class="q">
+        <label for="s2-explicit">Is the question explicit, or have you mostly described methods?</label>
+        <textarea id="s2-explicit" data-field data-short="Section 2 · Question explicit?"></textarea>
+      </div>
+      <div class="q">
+        <label for="s2-reconnect">How does your contribution answer the question and reconnect to the opening?</label>
+        <textarea id="s2-reconnect" data-field data-short="Section 2 · Reconnect to opening"></textarea>
+      </div>
+
+      <h3>Reader feedback</h3>
+      <div class="q">
+        <label for="s2-understood">My partner understood:</label>
+        <textarea id="s2-understood" data-field class="short" data-short="Section 2 · My partner understood"></textarea>
+      </div>
+      <div class="q">
+        <label for="s2-connection">A connection that needs more explanation:</label>
+        <textarea id="s2-connection" data-field class="short" data-short="Section 2 · Connection needing explanation"></textarea>
+      </div>
+    </section>
+
+    <!-- 3 -->
+    <section class="wb" id="s3" data-title="When openings misdirect readers" data-num="3">
+      <h2><span class="num">3.</span>When openings misdirect readers</h2>
+      <p>Read the first paragraph alone. Predict the focus of the paper before continuing to the next paragraph.</p>
+      <blockquote class="italic">Plants are a critical control of CH₄ dynamics in wetland ecosystems. They supply C [carbon] to the soil methanogenic community both through production of soil organic matter, and as fresh exudates and residues. Fresh plant material may be an important CH₄ precursor even in an organic matter–rich peat soil. Strong correlations between net primary productivity and system-level CH₄ fluxes across a wide range of ecosystems highlight the importance of plant C inputs.</blockquote>
+
+      <div class="q">
+        <label for="s3-predict">Before reading the next paragraph: What do you think this paper is about? What in the passage creates that expectation?</label>
+        <textarea id="s3-predict" data-field class="short" data-short="Section 3 · Prediction"></textarea>
+      </div>
+      <p class="source">Full passage quoted by Schimel in <cite>Writing Science</cite>, p. 38, Example 5.5, from J. P. Schimel, “Plant Transport and Methane Production as Controls on Methane Flux from Arctic Wet Meadow Tundra,” <cite>Biogeochemistry</cite> 28 (1995): 183–200.</p>
+
+      <div class="q">
+        <label for="s3-changes">What changes in the second paragraph? Why might that change surprise or confuse the reader?</label>
+        <textarea id="s3-changes" data-field data-short="Section 3 · What changes"></textarea>
+      </div>
+      <div class="q">
+        <label for="s3-revise">Revise the opening so the reader can anticipate the direction of both paragraphs.</label>
+        <textarea id="s3-revise" data-field class="long" data-short="Section 3 · Revised opening"></textarea>
+      </div>
+    </section>
+
+    <!-- 4 -->
+    <section class="wb" id="s4" data-title="An opening that makes the subject matter" data-num="4">
+      <h2><span class="num">4.</span>An opening that makes the subject matter</h2>
+      <p>Here are the first and last sentences of an opening paragraph about conjugated polymers. The ellipsis below indicates intervening sentences omitted in the book.</p>
+      <blockquote><strong>Conjugated polymers are novel materials that combine the optoelectronic properties of semiconductors with the mechanical properties and processing advantages of plastics.</strong></blockquote>
+      <p class="ellipsis" aria-label="intervening sentences omitted">…</p>
+      <blockquote><strong>Thus, conjugated polymers offer the possibility for use in devices such as plastic LEDs, photovoltaics, transistors, and in completely new applications such as flexible displays.</strong></blockquote>
+      <p class="source">Schimel, <cite>Writing Science</cite>, p. 37, Example 5.4; quoting B. J. Schwartz, “Conjugated Polymers as Molecular Materials: How Chain Conformation and Film Morphology Influence Energy Transfer and Interchain Interactions,” <cite>Annual Review of Physical Chemistry</cite> 54 (2003): 141–172.</p>
+
+      <div class="q">
+        <label for="s4-establish">How does the opening establish what makes the material interesting?</label>
+        <textarea id="s4-establish" data-field data-short="Section 4 · What makes it interesting"></textarea>
+      </div>
+      <div class="q">
+        <label for="s4-devices">What does the reference to potential devices add for readers?</label>
+        <textarea id="s4-devices" data-field data-short="Section 4 · Reference to devices"></textarea>
+      </div>
+
+      <h3>Return to your opening</h3>
+      <details class="lookback" data-from="s1-opening s1-challenge" data-into="s4-rewrite">
+        <summary>Look back: your Opening and Challenge from Section 1</summary>
+      </details>
+      <div class="q">
+        <label for="s4-rewrite">Rewrite one or two sentences so readers can identify the direction and appropriate significance of your own work.</label>
+        <textarea id="s4-rewrite" data-field class="long" data-short="Section 4 · My rewritten opening"></textarea>
+      </div>
+      <p class="note">A good opening does not need to claim that every project solves a global problem. It should identify a meaningful problem for its intended readers.</p>
+    </section>
+
+    <!-- 5 -->
+    <section class="wb" id="s5" data-title="A scientific funnel in atmospheric chemistry" data-num="5">
+      <h2><span class="num">5</span>A scientific funnel in atmospheric chemistry</h2>
+      <p class="source">Schimel annotates this introduction from G. L. Vaghjiani and A. R. Ravishankara, “New Measurement of the Rate Coefficient for the Reaction of OH with Methane,” <cite>Nature</cite> 350 (1991): 406–409. The numbers {1}–{9} mark points in his analysis. Schimel, <cite>Writing Science</cite>, pp. 51–52, Example 6.1. Original passage published in 1991; its numerical statements reflect that historical context.</p>
+
+      <div class="passage">
+        <p><span class="mk">{1}</span> Of all the trace tropospheric species (that is, excluding H₂O and CO₂) methane contributes most to the infrared heating of the atmosphere. <span class="mk">{2}</span> Methane is also the most abundant hydrocarbon in the troposphere where it modulates the concentration of the OH free radical and serves as a source of CO. <span class="mk">{3}</span> Transport of methane to the stratosphere provides a termination step, via the Cl + CH₄ reaction, for the chlorine-catalyzed destruction of ozone. The oxidation of methane in the stratosphere is an important source of water vapour in this region. During the past decade the abundance of methane in the troposphere has been increasing at a rate between 16 and 13 parts per 10⁹ volume (p.p.b.v.) per year. <span class="mk">{4}</span> The total input and the identities and strengths of the different atmospheric methane sources are not clearly defined. <span class="mk">{5}</span> To understand the atmospheric effects of methane, and possibly to regulate it, we need these parameters. <span class="mk">{6}</span> At present, the total flux of methane into the atmosphere is estimated from the measured steady-state abundance and the known removal rate of methane. It has been generally accepted that the only process by which methane is chemically degraded in the troposphere is the reaction with OH. <span class="mk">{7}</span> Therefore, the rate coefficient, k₁, for the reaction</p>
+        <p class="eq">OH + CH₄ → CH₃ + H₂O &nbsp;&nbsp;(1)</p>
+        <p>is important in estimating the total flux of methane. The other loss processes, which are expected to be minor pathways, are surface deposition and reaction with Cl atoms in the lower stratosphere and upper troposphere.</p>
+        <p><span class="mk">{8}</span> A close examination of the available data shows that only in three investigations was k₁ measured below 298 K, the temperature region most important to the atmosphere. Only Davis et al. measured k₁ down to 240 K. Reaction 1 is slow. Therefore, at low temperatures, the presence of reactive impurities and occurrence of secondary reactions in laboratory systems can result in an overestimate of k₁. <span class="mk">{9}</span> We studied reaction 1 using an experimental method in which secondary chemistry could be minimized and the systematic errors reduced.</p>
+      </div>
+
+      <h3>Reading while you work</h3>
+      <div class="q">
+        <label for="s5-reading">Mark the larger problem and identify the sentence that first makes an uncertainty visible. What else must the writer explain before reaching a particular chemical rate?</label>
+        <textarea id="s5-reading" data-field data-short="Section 5 · Reading while you work"></textarea>
+      </div>
+
+      <h3>Find the transitions in scale</h3>
+      <div class="q">
+        <label for="s5-shift">Where does the passage shift from methane’s atmospheric role to the OH reaction?</label>
+        <textarea id="s5-shift" data-field class="short" data-short="Section 5 · Shift to the OH reaction"></textarea>
+      </div>
+      <div class="q">
+        <label for="s5-gap">What gap makes another measurement of the rate coefficient necessary?</label>
+        <textarea id="s5-gap" data-field class="short" data-short="Section 5 · The gap"></textarea>
+      </div>
+    </section>
+
+    <!-- Plan your funnel (unnumbered in the original) -->
+    <section class="wb" id="funnel" data-title="Plan your own research funnel">
+      <h2>Plan your own research funnel</h2>
+      <p>Use the atmospheric chemistry example as a model for linking a broad but appropriate research problem to your particular investigation.</p>
+
+      <details class="lookback" data-from="s1-opening s1-challenge s4-rewrite s2-connection">
+        <summary>Look back: your Opening, Challenge, rewritten opening, and partner feedback</summary>
+      </details>
+
+      <div class="q">
+        <label for="f-larger">1. Larger issue: What will your intended readers recognize as the meaningful problem?</label>
+        <textarea id="f-larger" data-field data-short="Funnel 1 · Larger issue"></textarea>
+      </div>
+      <div class="q">
+        <label for="f-existing">2. Existing knowledge: What do readers need to understand before they can follow your question?</label>
+        <textarea id="f-existing" data-field data-short="Funnel 2 · Existing knowledge"></textarea>
+      </div>
+      <div class="q">
+        <label for="f-uncertainty">3. Uncertainty: What exactly is unknown, disputed, difficult to predict, or not adequately explained?</label>
+        <textarea id="f-uncertainty" data-field data-short="Funnel 3 · Uncertainty"></textarea>
+      </div>
+      <div class="q">
+        <label for="f-question">4. Specific question: What does your research set out to learn?</label>
+        <textarea id="f-question" data-field data-short="Funnel 4 · Specific question"></textarea>
+      </div>
+
+      <h3>An important distinction:</h3>
+      <table>
+        <thead><tr><th scope="col">Research activity</th><th scope="col">Question that gives activity a purpose</th></tr></thead>
+        <tbody><tr><td>Compare plant-growth measures</td><td>How does grass growth respond to elevated CO₂ and temperature?</td></tr></tbody>
+      </table>
+      <p class="source">This comparison is adapted from Schimel’s Chapter 7 discussion of questions versus objectives. Name the question before you describe the measurement strategy.</p>
+    </section>
+
+    <!-- 8 -->
+    <section class="wb" id="s8" data-title="Draft your research introduction" data-num="8">
+      <h2><span class="num">8</span>Draft your research introduction</h2>
+      <p>Write a short introduction (roughly 100–150 words, if helpful). Establish the larger issue, provide necessary background, identify the uncertainty, and lead to your specific question. This is a draft—not a finished manuscript introduction.</p>
+
+      <details class="lookback" data-from="f-larger f-existing f-uncertainty f-question s4-rewrite" data-into="s8-draft">
+        <summary>Look back: your research funnel and rewritten opening</summary>
+      </details>
+
+      <div class="q">
+        <label for="s8-draft">My draft introduction</label>
+        <textarea id="s8-draft" data-field class="long" data-wordcount="100-150" data-short="Section 8 · Draft introduction" style="min-height:18em"></textarea>
+        <div class="wordcount" id="s8-draft-count" aria-live="off">0 words</div>
+      </div>
+
+      <h3>Drafting check</h3>
+      <ul class="checks">
+        <li><label><input type="checkbox" id="chk-direction" data-field> The opening establishes the direction.</label></li>
+        <li><label><input type="checkbox" id="chk-context" data-field> The context leads toward the question.</label></li>
+        <li><label><input type="checkbox" id="chk-methods" data-field> I have not substituted a list of methods for the question.</label></li>
+      </ul>
+    </section>
+
+    <!-- 9 -->
+    <section class="wb" id="s9" data-title="Test, revise, and connect the story" data-num="9">
+      <h2><span class="num">9</span>Test, revise, and connect the story</h2>
+      <p>Exchange passages with a partner. Read as an interested scientist from another specialization.</p>
+      <p class="note no-print">Tip: to share your draft with a partner, open the look-back panel under “My next revision” and use “Copy,” or read it aloud from Section 8.</p>
+
+      <div class="q">
+        <label for="s9-problem">What larger problem does this research address?</label>
+        <textarea id="s9-problem" data-field class="short" data-short="Section 9 · Larger problem (partner’s draft)"></textarea>
+      </div>
+      <div class="q">
+        <label for="s9-question">What specific question is the researcher investigating?</label>
+        <textarea id="s9-question" data-field class="short" data-short="Section 9 · Specific question (partner’s draft)"></textarea>
+      </div>
+      <div class="q">
+        <label for="s9-sentence">Which sentence most effectively connects the larger problem and the specific question?</label>
+        <textarea id="s9-sentence" data-field class="short" data-short="Section 9 · Connecting sentence"></textarea>
+      </div>
+      <div class="q">
+        <label for="s9-needed">Where did you need an explanation, transition, or clearer direction?</label>
+        <textarea id="s9-needed" data-field class="short" data-short="Section 9 · Where clarity was needed"></textarea>
+      </div>
+
+      <h3>My next revision</h3>
+      <details class="lookback" data-from="s8-draft" data-into="s9-revision" data-copy="clipboard">
+        <summary>Look back: your draft introduction from Section 8</summary>
+      </details>
+      <div class="q">
+        <label for="s9-revision">Choose one point of feedback and revise at least one sentence or transition.</label>
+        <textarea id="s9-revision" data-field class="long" data-short="Section 9 · My next revision"></textarea>
+      </div>
+
+      <h3>Thinking ahead to the resolution</h3>
+      <p>Writers should aim to close the circle: an eventual conclusion must answer the research question and show what changed in our understanding of the larger problem. For ongoing work, describe that as a goal, not an accomplished result.</p>
+      <details class="lookback" data-from="s1-resolution f-question">
+        <summary>Look back: your Resolution (Section 1) and specific question (funnel)</summary>
+      </details>
+      <div class="q">
+        <label for="s9-resolution">Notes</label>
+        <textarea id="s9-resolution" data-field class="short" data-short="Section 9 · Notes on the resolution"></textarea>
+      </div>
+    </section>
+
+    <!-- 10 -->
+    <section class="wb" id="s10" data-title="Write high-impact scientific sentences" data-num="10">
+      <h2><span class="num">10</span>Write high-impact scientific sentences</h2>
+
+      <h3>A. Find the delayed verb</h3>
+      <div class="example">
+        <div><b>Original:</b> The concentration of the compound in water samples collected after treatment, despite considerable variation in initial concentrations, decreased.</div>
+        <div><b>Revision:</b> The compound’s concentration decreased after treatment, despite differences in the samples’ initial concentrations.</div>
+      </div>
+      <div class="q">
+        <label for="s10-a">What happens to the reader when the main verb appears sooner?</label>
+        <textarea id="s10-a" data-field class="short" data-short="Section 10A · Main verb sooner"></textarea>
+      </div>
+
+      <h3>B. Choose verbs that accurately express the action</h3>
+      <div class="example">
+        <div><b>Less direct:</b> There was a reduction in methane emissions following treatment.</div>
+        <div><b>More direct:</b> Treatment reduced methane emissions.</div>
+      </div>
+      <p>Watch evidence strength: <em>suggests</em>, <em>indicates</em>, <em>demonstrates</em>, and <em>proves</em> have different implications. Passive voice and forms of <em>be</em> can be appropriate when they serve your intended meaning.</p>
+      <div class="q">
+        <label for="s10-b">Notes</label>
+        <textarea id="s10-b" data-field class="short" data-short="Section 10B · Notes"></textarea>
+      </div>
+
+      <h3>C. Transfer: writing, slides, and posters</h3>
+      <details class="lookback" data-from="s8-draft s9-revision" data-into="s10-c">
+        <summary>Look back: your draft introduction and revision</summary>
+      </details>
+      <div class="q">
+        <label for="s10-c">In your introduction, find one sentence whose main action is delayed or unclear. Revise it.</label>
+        <textarea id="s10-c" data-field data-short="Section 10C · Revised sentence"></textarea>
+      </div>
+      <p>For a talk or poster, consider Michael Alley’s assertion–evidence approach: state a specific finding or message and support it with visual evidence.</p>
+
+      <p><strong>Try it:</strong></p>
+      <div class="q">
+        <label for="s10-poster">If you were designing a poster, what would be your title?</label>
+        <textarea id="s10-poster" data-field class="short" data-short="Section 10C · Poster title"></textarea>
+      </div>
+      <div class="q">
+        <label for="s10-slide">Instead of a PowerPoint slide title that is generic (e.g. “Results” or “Discussion”), what assertion could you make?</label>
+        <textarea id="s10-slide" data-field class="short" data-short="Section 10C · Slide assertion"></textarea>
+      </div>
+
+      <div class="q">
+        <label for="s10-goal">One writing goal after this workshop:</label>
+        <textarea id="s10-goal" data-field data-short="One writing goal"></textarea>
+      </div>
+    </section>
+
+    <div class="card no-print" style="margin-top:40px">
+      <h2 style="font-size:1.25rem">Keep your work</h2>
+      <p>Your answers are saved in this browser. To keep a permanent copy, download one before you leave.</p>
+      <button type="button" class="btn" data-action="print">Print or save as PDF</button>
+      <button type="button" class="btn secondary" data-action="txt">Download as text (.txt)</button>
+      <button type="button" class="btn secondary" data-action="backup">Download a backup file</button>
+    </div>
+
+    <p class="end">Storytelling in Scientific Writing · Participant workbook</p>
+  </main>
+</div>
+
+<div id="announcer" class="sr-only" role="status" aria-live="polite"></div>
+
+<script>
+(function () {
+  "use strict";
+  var KEY = "storytelling-sci-writing-workbook:v1";
+  var fields = Array.prototype.slice.call(document.querySelectorAll("[data-field]"));
+  var byId = {};
+  fields.forEach(function (el) { byId[el.id] = el; });
+  var statusEl = document.getElementById("status");
+  var statusText = document.getElementById("status-text");
+  var announcer = document.getElementById("announcer");
+
+  // ---------- storage ----------
+  var storageOK = true;
+  try {
+    localStorage.setItem(KEY + ":test", "1");
+    localStorage.removeItem(KEY + ":test");
+  } catch (e) { storageOK = false; }
+
+  function collect() {
+    var data = { app: "storytelling-workbook", version: 1, updated: new Date().toISOString(), fields: {} };
+    fields.forEach(function (el) {
+      data.fields[el.id] = el.type === "checkbox" ? el.checked : el.value;
+    });
+    return data;
+  }
+  function apply(data) {
+    var f = (data && data.fields) || {};
+    fields.forEach(function (el) {
+      if (!(el.id in f)) return;
+      if (el.type === "checkbox") el.checked = !!f[el.id];
+      else el.value = typeof f[el.id] === "string" ? f[el.id] : "";
+    });
+    refreshAll();
+  }
+  function hasContent() {
+    return fields.some(function (el) { return el.type === "checkbox" ? el.checked : el.value.trim() !== ""; });
+  }
+
+  var dirty = false;
+  function timeStr(d) {
+    try { return d.toLocaleTimeString([], { hour: "numeric", minute: "2-digit" }); } catch (e) { return ""; }
+  }
+  function setStatus(text, warn) {
+    statusText.textContent = text;
+    statusEl.classList.toggle("warn", !!warn);
+  }
+  function save() {
+    if (!storageOK) { dirty = true; return; }
+    try {
+      localStorage.setItem(KEY, JSON.stringify(collect()));
+      dirty = false;
+      setStatus("Saved " + timeStr(new Date()));
+      statusEl.title = "Saved automatically in this browser";
+    } catch (e) {
+      dirty = true;
+      setStatus("Not saved — download a backup", true);
+    }
+  }
+  var saveTimer = null;
+  function scheduleSave() {
+    dirty = true;
+    if (storageOK) setStatus("Saving…");
+    clearTimeout(saveTimer);
+    saveTimer = setTimeout(save, 400);
+  }
+
+  // ---------- UI helpers ----------
+  function autosize(t) {
+    if (CSS && CSS.supports && CSS.supports("field-sizing", "content")) return;
+    t.style.height = "auto";
+    t.style.height = (t.scrollHeight + 2) + "px";
+  }
+  function countWords(s) { var m = s.trim().match(/\S+/g); return m ? m.length : 0; }
+  function updateWordcount(t) {
+    var range = t.getAttribute("data-wordcount");
+    if (!range) return;
+    var out = document.getElementById(t.id + "-count");
+    var n = countWords(t.value), lo = +range.split("-")[0], hi = +range.split("-")[1];
+    out.textContent = n + (n === 1 ? " word" : " words") + " · suggested " + lo + "–" + hi;
+    out.classList.toggle("ok", n >= lo && n <= hi);
+  }
+  function labelFor(el) {
+    var l = document.querySelector('label[for="' + el.id + '"]') || el.closest("label");
+    return l ? l.textContent.replace(/\s+/g, " ").trim() : el.id;
+  }
+  function announce(msg) { announcer.textContent = ""; setTimeout(function () { announcer.textContent = msg; }, 50); }
+
+  // ---------- table of contents & progress ----------
+  var sections = Array.prototype.slice.call(document.querySelectorAll("section.wb"));
+  var tocList = document.getElementById("toc-list");
+  var tocMobile = document.getElementById("toc-list-mobile");
+  var tocLinks = {};
+  sections.forEach(function (sec) {
+    var num = sec.getAttribute("data-num");
+    var title = (num ? num + ". " : "") + sec.getAttribute("data-title");
+    var li = document.createElement("li");
+    var a = document.createElement("a");
+    a.href = "#" + sec.id;
+    var span = document.createElement("span"); span.textContent = title;
+    var count = document.createElement("span"); count.className = "count";
+    a.appendChild(span); a.appendChild(count);
+    li.appendChild(a); tocList.appendChild(li);
+    tocLinks[sec.id] = { a: a, count: count };
+    var li2 = document.createElement("li"), a2 = document.createElement("a");
+    a2.href = "#" + sec.id; a2.textContent = title;
+    a2.addEventListener("click", function () { document.querySelector(".mobile-toc").open = false; });
+    li2.appendChild(a2); tocMobile.appendChild(li2);
+  });
+  function updateProgress() {
+    sections.forEach(function (sec) {
+      var boxes = sec.querySelectorAll("textarea[data-field]");
+      var link = tocLinks[sec.id];
+      if (!boxes.length) { link.count.textContent = ""; return; }
+      var filled = 0;
+      boxes.forEach(function (t) { if (t.value.trim()) filled++; });
+      link.count.textContent = filled === boxes.length ? "✓ done" : filled + "/" + boxes.length;
+      link.count.classList.toggle("done", filled === boxes.length);
+      link.a.setAttribute("aria-label", sec.getAttribute("data-title") + ", " + filled + " of " + boxes.length + " answered");
+    });
+  }
+  if ("IntersectionObserver" in window) {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        if (en.isIntersecting) {
+          Object.keys(tocLinks).forEach(function (k) { tocLinks[k].a.classList.remove("active"); });
+          tocLinks[en.target.id].a.classList.add("active");
+        }
+      });
+    }, { rootMargin: "-80px 0px -65% 0px" });
+    sections.forEach(function (s) { io.observe(s); });
+  }
+
+  // ---------- look-back panels ----------
+  function renderLookback(det) {
+    var body = det.querySelector(".lookback-body");
+    if (!body) { body = document.createElement("div"); body.className = "lookback-body"; det.appendChild(body); }
+    body.innerHTML = "";
+    var into = det.getAttribute("data-into");
+    var target = into ? byId[into] : null;
+    det.getAttribute("data-from").split(/\s+/).forEach(function (id) {
+      var src = byId[id];
+      if (!src) return;
+      var item = document.createElement("div"); item.className = "lb-item";
+      var lab = document.createElement("div"); lab.className = "lb-label";
+      lab.textContent = src.getAttribute("data-short") || labelFor(src);
+      item.appendChild(lab);
+      var val = src.value.trim();
+      if (!val) {
+        var empty = document.createElement("p"); empty.className = "lb-empty";
+        empty.appendChild(document.createTextNode("Not answered yet. "));
+        var go = document.createElement("a"); go.href = "#" + id; go.textContent = "Go to this question";
+        go.addEventListener("click", function (e) { e.preventDefault(); src.scrollIntoView({ block: "center" }); src.focus({ preventScroll: true }); });
+        empty.appendChild(go);
+        item.appendChild(empty);
+      } else {
+        var txt = document.createElement("div"); txt.className = "lb-text"; txt.textContent = val;
+        item.appendChild(txt);
+        if (target) {
+          var b = document.createElement("button"); b.type = "button"; b.className = "lb-copy";
+          b.textContent = "Add to my answer below";
+          b.setAttribute("aria-label", "Add “" + lab.textContent + "” to: " + labelFor(target));
+          b.addEventListener("click", function () {
+            target.value = target.value.trim() ? target.value.replace(/\s+$/, "") + "\n\n" + val : val;
+            onInput(target);
+            target.focus();
+            announce("Added to your answer.");
+          });
+          item.appendChild(b);
+        }
+        if (det.getAttribute("data-copy") === "clipboard" && navigator.clipboard) {
+          var c = document.createElement("button"); c.type = "button"; c.className = "lb-copy";
+          c.style.marginLeft = "6px";
+          c.textContent = "Copy";
+          c.addEventListener("click", function () {
+            navigator.clipboard.writeText(val).then(function () { c.textContent = "Copied"; announce("Copied to clipboard."); setTimeout(function () { c.textContent = "Copy"; }, 1500); });
+          });
+          item.appendChild(c);
+        }
+      }
+      body.appendChild(item);
+    });
+  }
+  var lookbacks = Array.prototype.slice.call(document.querySelectorAll("details.lookback"));
+  lookbacks.forEach(function (det) {
+    det.addEventListener("toggle", function () { if (det.open) renderLookback(det); });
+  });
+
+  // ---------- input handling ----------
+  function onInput(el) {
+    if (el.tagName === "TEXTAREA") { autosize(el); updateWordcount(el); }
+    updateProgress();
+    scheduleSave();
+  }
+  fields.forEach(function (el) {
+    el.addEventListener(el.type === "checkbox" ? "change" : "input", function () { onInput(el); });
+  });
+  function refreshAll() {
+    fields.forEach(function (el) { if (el.tagName === "TEXTAREA") { autosize(el); updateWordcount(el); } });
+    updateProgress();
+    lookbacks.forEach(function (d) { if (d.open) renderLookback(d); });
+  }
+
+  // ---------- export ----------
+  function download(filename, text, type) {
+    var blob = new Blob([text], { type: type });
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement("a");
+    a.href = url; a.download = filename;
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(function () { URL.revokeObjectURL(url); }, 2000);
+  }
+  function dateStamp() {
+    var d = new Date();
+    return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0");
+  }
+  function buildText() {
+    var out = ["STORYTELLING IN SCIENTIFIC WRITING", "Strategies for Clarity, Impact, and Engagement", "Participant workbook — saved " + new Date().toLocaleString(), ""];
+    sections.forEach(function (sec) {
+      var items = sec.querySelectorAll("[data-field]");
+      if (!items.length) return;
+      var num = sec.getAttribute("data-num");
+      var title = (num ? num + ". " : "") + sec.getAttribute("data-title");
+      out.push("", "=".repeat(Math.min(title.length, 60)), title, "=".repeat(Math.min(title.length, 60)), "");
+      items.forEach(function (el) {
+        if (el.type === "checkbox") {
+          out.push((el.checked ? "[x] " : "[ ] ") + labelFor(el));
+        } else {
+          out.push(labelFor(el));
+          out.push(el.value.trim() ? el.value.trim() : "(no answer)");
+          out.push("");
+        }
+      });
+    });
+    return out.join("\r\n");
+  }
+  function syncPrint() {
+    fields.forEach(function (el) {
+      if (el.tagName !== "TEXTAREA") return;
+      var p = el.nextElementSibling;
+      if (!p || !p.classList.contains("print-answer")) {
+        p = document.createElement("div"); p.className = "print-answer";
+        el.parentNode.insertBefore(p, el.nextSibling);
+      }
+      p.textContent = el.value.trim() || "(no answer)";
+      p.classList.toggle("empty", !el.value.trim());
+    });
+  }
+  window.addEventListener("beforeprint", syncPrint);
+
+  var restoreInput = document.getElementById("restore-input");
+  restoreInput.addEventListener("change", function () {
+    var file = restoreInput.files && restoreInput.files[0];
+    if (!file) return;
+    var reader = new FileReader();
+    reader.onload = function () {
+      try {
+        var data = JSON.parse(reader.result);
+        if (!data || data.app !== "storytelling-workbook" || typeof data.fields !== "object") throw new Error("bad");
+        if (hasContent() && !confirm("Replace the answers on this page with the ones in the backup file?")) return;
+        apply(data);
+        save();
+        announce("Your answers were restored from the backup file.");
+        alert("Your answers were restored.");
+      } catch (e) {
+        alert("That file doesn’t look like a backup from this workbook. Choose the .json file you downloaded with “Download a backup file.”");
+      } finally { restoreInput.value = ""; }
+    };
+    reader.readAsText(file);
+  });
+
+  var actions = {
+    print: function () { syncPrint(); window.print(); },
+    txt: function () { download("storytelling-workbook-" + dateStamp() + ".txt", buildText(), "text/plain;charset=utf-8"); announce("Text file downloaded."); },
+    backup: function () { download("storytelling-workbook-backup-" + dateStamp() + ".json", JSON.stringify(collect(), null, 2), "application/json"); dirty = false; announce("Backup file downloaded."); },
+    clear: function () {
+      if (!confirm("Clear all of your answers from this page and this browser? This can’t be undone. (Download a copy first if you want to keep your work.)")) return;
+      fields.forEach(function (el) { if (el.type === "checkbox") el.checked = false; else el.value = ""; });
+      try { localStorage.removeItem(KEY); } catch (e) {}
+      refreshAll();
+      setStatus(storageOK ? "Cleared" : "Not saving in this browser", !storageOK);
+      dirty = false;
+      announce("All answers cleared.");
+    }
+  };
+  document.addEventListener("click", function (e) {
+    var btn = e.target.closest("[data-action]");
+    if (!btn) return;
+    var menu = document.getElementById("menu");
+    if (menu.contains(btn)) menu.open = false;
+    actions[btn.getAttribute("data-action")]();
+  });
+  document.querySelector('label[for="restore-input"]').addEventListener("click", function () {
+    document.getElementById("menu").open = false;
+  });
+  document.addEventListener("click", function (e) {
+    var menu = document.getElementById("menu");
+    if (menu.open && !menu.contains(e.target)) menu.open = false;
+  });
+  document.addEventListener("keydown", function (e) {
+    var menu = document.getElementById("menu");
+    if (e.key === "Escape" && menu.open) { menu.open = false; menu.querySelector("summary").focus(); }
+  });
+
+  window.addEventListener("beforeunload", function (e) {
+    if (!storageOK && dirty && hasContent()) { e.preventDefault(); e.returnValue = ""; }
+  });
+
+  // ---------- start ----------
+  if (storageOK) {
+    try {
+      var raw = localStorage.getItem(KEY);
+      if (raw) {
+        var data = JSON.parse(raw);
+        apply(data);
+        setStatus("Saved " + (data.updated ? timeStr(new Date(data.updated)) : ""));
+        statusEl.title = "Saved automatically in this browser";
+      } else {
+        refreshAll();
+        setStatus("Autosave on");
+        statusEl.title = "Your answers save automatically in this browser";
+      }
+    } catch (e) { refreshAll(); setStatus("Autosave on"); }
+  } else {
+    refreshAll();
+    setStatus("Autosave unavailable in this browser — use “Save a copy”", true);
+  }
+})();
+</script>
+</body>
+</html>
